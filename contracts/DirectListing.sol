@@ -1,6 +1,7 @@
 pragma solidity 0.4.24;
 
-import "@ensdomains/ens/contracts/ENS";
+import "@ensdomains/ens/contracts/ENS.sol";
+import "@ensdomains/ens/contracts/HashRegistrarSimplified.sol";
 
 contract DirectListing {
     event Offered(bytes32 indexed node, address indexed owner, uint256 price, uint256 ttl);
@@ -10,7 +11,7 @@ contract DirectListing {
     ENS ens;
     Registrar registrar;
     
-    constructor() {
+    constructor() public {
         
     }
     
