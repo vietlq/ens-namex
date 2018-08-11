@@ -46,8 +46,8 @@ contract('DirectListing', function (accounts) {
 
         const registrar = await Registrar.new(ens.address, rootNode.namehash, 0);
 
-        const p2 = await ens.setSubnodeOwner('0x0', rootNode.sha3, registrar.address);
-        console.log('ens.setSubnodeOwner => ', p2, p2.receipt.logs[0], p2.logs[0].args);
+        const setSubnodeOwnerResult = await ens.setSubnodeOwner('0x0', rootNode.sha3, registrar.address);
+        console.log('ens.setSubnodeOwner => ', setSubnodeOwnerResult, setSubnodeOwnerResult.receipt.logs[0], setSubnodeOwnerResult.logs[0].args);
         assert.strictEqual(await ens.owner(rootNode.namehash), registrar.address);
         assert.strictEqual(await ens.owner(rootNode.sha3), "0x0000000000000000000000000000000000000000");
         assert.strictEqual(await ens.resolver(rootNode.sha3), "0x0000000000000000000000000000000000000000");
@@ -58,16 +58,15 @@ contract('DirectListing', function (accounts) {
         await sendRpc('evm_increaseTime', [TIME_80_WEEKS]);
 
         const nodeEntryBeforeAuction = (await registrar.entries(testDomain.sha3))[0];
-        const price = 10;
 
         assert.strictEqual(nodeEntryBeforeAuction.toString(), '5', 'Bad nodeEntryBeforeAuction');
 
         console.log(`About to start the auction for ${theDomainName}`);
-        const p3 = await registrar.startAuction(testDomain.sha3, {
+        const startAuctionResult = await registrar.startAuction(testDomain.sha3, {
             from: initialDomainOwner,
             gas: 100000
         });
-        console.log('registrar.startAuction => ', p3, p3.receipt.logs[0], p3.logs[0].args);
+        console.log('registrar.startAuction => ', startAuctionResult, startAuctionResult.receipt.logs[0], startAuctionResult.logs[0].args);
 
         const nodeEntryAfterAuction = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction.toString(), '1', 'Bad nodeEntryAfterAuction');
@@ -168,29 +167,31 @@ contract('DirectListing', function (accounts) {
         assert.strictEqual(contract.address, theDeedOwner3);
         assert.strictEqual(await theDeed.previousOwner(), initialDomainOwner);
 
-        // const event = contract.Offered({
-        //     _from: initialDomainOwner
-        // }, {
-        //     fromBlock: 0,
-        //     toBlock: 'latest'
-        // });
+        const event = contract.Offered({
+            _from: initialDomainOwner
+        }, {
+            fromBlock: 0,
+            toBlock: 'latest'
+        });
 
-        // const p1 = new Promise((resolve, reject) => {
-        //     event.watch((error, result) => {
-        //         if (error) return reject(error);
+        const price = web3.toWei(0.1, 'ether');
 
-        //         resolve(result);
-        //     });
-        // }).then((result) => {
-        //     assert.strictEqual(result.args.owner, initialDomainOwner, 'Should have matched the creator');
-        //     assert.strictEqual(result.args.price, price, 'Should have matched the offered price');
-        //     assert.strictEqual(result.args.node, testDomain.sha3, 'Should have matched the matched label node');
-        // });
+        const domainOfferedEvent = new Promise((resolve, reject) => {
+            event.watch((error, result) => {
+                if (error) return reject(error);
+                resolve(result);
+            });
+        }).then((result) => {
+            console.log('result.args.price => ', result.args.price);
+            assert.strictEqual(result.args.owner, initialDomainOwner, 'Should have matched the creator');
+            assert.strictEqual(result.args.price.toString(), price, 'Should have matched the offered price');
+            assert.strictEqual(result.args.node, testDomain.sha3, 'Should have matched the matched label node');
+        });
 
-        // const p2 = contract.offer(testDomain.sha3, price, 10, {
-        //     from: initialDomainOwner
-        // });
+        const offerDomainResult = contract.offer(testDomain.sha3, price, 10, {
+            from: initialDomainOwner
+        });
 
-        // return Promise.all([p1, p2]);
+        return Promise.all([domainOfferedEvent, offerDomainResult]);
     });
 });
