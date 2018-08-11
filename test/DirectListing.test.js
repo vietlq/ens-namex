@@ -141,6 +141,19 @@ contract('DirectListing', function (accounts) {
         console.log('theDeedOwner2 => ', theDeedOwner2);
         assert.strictEqual(initialDomainOwner, theDeedOwner2);
 
+        //////// Check the owner and resolver ////////
+
+        assert.strictEqual(await ens.owner(testDomain.namehash), "0x0000000000000000000000000000000000000000");
+        assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
+
+        //await ens.setOwner(testDomain.namehash, initialDomainOwner, {from: initialDomainOwner});
+        //assert.strictEqual(await ens.owner(testDomain.namehash), initialDomainOwner);
+        //assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
+
+        //await ens.setResolver(testDomain.namehash, resolverAddress, {from: initialDomainOwner});
+        //assert.strictEqual(await ens.owner(testDomain.namehash), initialDomainOwner);
+        //assert.strictEqual(await ens.resolver(testDomain.namehash), resolverAddress);
+
         // const event = contract.Offered({
         //     _from: initialDomainOwner
         // }, {
