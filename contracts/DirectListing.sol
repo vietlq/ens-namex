@@ -1,5 +1,6 @@
 pragma solidity 0.4.24;
 
+import "@ensdomains/ens/contracts/ENSRegistry.sol";
 import "@ensdomains/ens/contracts/ENS.sol";
 import "@ensdomains/ens/contracts/HashRegistrarSimplified.sol";
 import "@ensdomains/ens/contracts/Deed.sol";
@@ -12,6 +13,10 @@ contract DirectListing {
 
     ENS ens;
     Registrar registrar;
+
+    uint32 constant totalListingLength = 5 days;
+    uint32 constant revealPeriod = 48 hours;
+    uint32 public constant launchLength = 8 weeks;
 
     struct Offering {
         address nodeOwner;
