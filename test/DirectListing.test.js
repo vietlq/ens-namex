@@ -1,8 +1,10 @@
 var DirectListing = artifacts.require('./DirectListing');
 var Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
 var ENS = artifacts.require('@ensdomains/ens/contracts/ENSRegistry');
+var Deed = artifacts.require('@ensdomains/ens/contracts/Deed');
 var namehash = require('eth-ens-namehash').hash;
 
+// https://docs.ens.domains/en/latest/userguide.html
 // https://ethereum.stackexchange.com/questions/21509/truffle-testrpc-time-manipulation
 // https://ethereum.stackexchange.com/questions/15755/simulating-the-passage-of-time-with-testrpc
 // https://github.com/DigixGlobal/tempo/blob/master/lib/index.js
@@ -114,6 +116,30 @@ contract('DirectListing', function (accounts) {
         const nodeEntryAfterAuction7 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction7.toString(), '2', 'Bad nodeEntryAfterAuction7');
 
+        //////// Transfer the winning deed to the winner ////////
+        /*
+        mapping (bytes32 => Entry) _entries;
+
+        struct Entry {
+            Deed deed;
+            uint registrationDate;
+            uint value;
+            uint highestBid;
+        }
+        */
+
+        const theEntry = await registrar.entries(testDomain.sha3);
+        console.log('theEntry => ', theEntry);
+        const theDeedOwner = await Deed.at(theEntry[1]).owner();
+        console.log('theDeedOwner => ', theDeedOwner);
+        assert.strictEqual(initialDomainOwner, theDeedOwner);
+
+        const transferDeedResult = await registrar.transfer(testDomain.sha3, initialDomainOwner, {from: initialDomainOwner});
+        console.log('transferDeedResult => ', transferDeedResult, transferDeedResult.receipt.logs[0], transferDeedResult.receipt.logs[1]);
+
+        const theDeedOwner2 = await Deed.at(theEntry[1]).owner();
+        console.log('theDeedOwner2 => ', theDeedOwner2);
+        assert.strictEqual(initialDomainOwner, theDeedOwner2);
 
         // const event = contract.Offered({
         //     _from: initialDomainOwner
