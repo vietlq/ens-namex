@@ -25,8 +25,9 @@ contract DirectListing {
         registrar = Registrar(_registrar);
     }
 
-    function isOffered(bytes32 _hash) external view returns (bool) {
-        
+    // https://ethereum.stackexchange.com/questions/7853/is-the-block-timestamp-value-in-solidity-seconds-or-milliseconds
+    function isOffered(bytes32 _hash) view returns (bool) {
+        return (offerings[_hash].nodeOwner != 0x0 && offerings[_hash].expireAt >= block.timestamp);
     }
     
     function offer(bytes32 _hash, uint256 _price, uint256 _expireAt) external {
@@ -38,7 +39,7 @@ contract DirectListing {
         // the deed owner is the msg.sender
         // node should not be 0 or already offered
         // nodeOwner not 0
-        // block.timestamp + _expireAt
+        // block.timestamp <= _expireAt
 
         offerings[_hash] = Offering(msg.sender, _price, _expireAt);
 
@@ -50,6 +51,7 @@ contract DirectListing {
         var (a, deedAddr, b, c, d) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
 
+        // https://ethereum.stackexchange.com/questions/28972/who-is-msg-sender-when-calling-a-contract-from-a-contract
         require(deedAddr != 0x0 && deed.previousOwner() == msg.sender && deed.owner() == address(this));
 
         delete offerings[_hash];
@@ -77,6 +79,6 @@ contract DirectListing {
     }
 
     function buy(bytes32 _hash) external payable {
-        
+        require(isOffered(_hash) && msg.value >= offerings[_hash].price);
     }
 }
