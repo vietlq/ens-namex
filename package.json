@@ -2,6 +2,7 @@
   "name": "namex",
   "version": "0.1.0",
   "description": "ENS Name Exchange",
+  "private": true,
   "main": "truffle.js",
   "bugs": {
     "url": "https://github.com/vietlq/ens-namex/issues"
@@ -24,13 +25,24 @@
     "ethereumjs-testrpc": "6.0.1",
     "openzeppelin-solidity": "^1.11.0",
     "truffle": "^4.1.11",
-    "web3": "0.20.1"
+    "web3": "0.20.1",
+    "react": "^16.4.2",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.4.2",
+    "react-router": "^4.3.1",
+    "react-router-bootstrap": "^0.24.4",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4"
   },
   "scripts": {
     "truffle": "truffle",
-    "test": "truffle test",
+    "test:contract": "truffle test",
     "deploy": "truffle migrate --reset",
-    "build": "rm -rf ./build && truffle compile",
-    "development": "npm run build && npm run deploy"
+    "build:contract": "rm -rf ./build && truffle compile",
+    "development": "npm run build && npm run deploy",
+    "start": "react-scripts start",
+    "build:ui": "react-scripts build",
+    "test:ui": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
