@@ -48,6 +48,9 @@ contract('DirectListing', function (accounts) {
 
         const p2 = await ens.setSubnodeOwner('0x0', rootNode.sha3, registrar.address);
         console.log('ens.setSubnodeOwner => ', p2, p2.receipt.logs[0], p2.logs[0].args);
+        assert.strictEqual(await ens.owner(rootNode.namehash), registrar.address);
+        assert.strictEqual(await ens.owner(rootNode.sha3), "0x0000000000000000000000000000000000000000");
+        assert.strictEqual(await ens.resolver(rootNode.sha3), "0x0000000000000000000000000000000000000000");
 
         const contract = await DirectListing.new(registrar.address);
 
@@ -130,14 +133,15 @@ contract('DirectListing', function (accounts) {
 
         const theEntry = await registrar.entries(testDomain.sha3);
         console.log('theEntry => ', theEntry);
-        const theDeedOwner = await Deed.at(theEntry[1]).owner();
+        const theDeed = Deed.at(theEntry[1]);
+        const theDeedOwner = await theDeed.owner();
         console.log('theDeedOwner => ', theDeedOwner);
         assert.strictEqual(initialDomainOwner, theDeedOwner);
 
         const transferDeedResult = await registrar.transfer(testDomain.sha3, initialDomainOwner, {from: initialDomainOwner});
         console.log('transferDeedResult => ', transferDeedResult, transferDeedResult.receipt.logs[0], transferDeedResult.receipt.logs[1]);
 
-        const theDeedOwner2 = await Deed.at(theEntry[1]).owner();
+        const theDeedOwner2 = await theDeed.owner();
         console.log('theDeedOwner2 => ', theDeedOwner2);
         assert.strictEqual(initialDomainOwner, theDeedOwner2);
 
