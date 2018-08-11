@@ -10,7 +10,7 @@ contract DirectListing {
     ENS ens;
     Registrar registrar;
     
-    constructor() {
+    constructor() public {
         
     }
     
