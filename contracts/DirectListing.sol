@@ -3,9 +3,8 @@ pragma solidity 0.4.24;
 import "@ensdomains/ens/contracts/ENS.sol";
 import "@ensdomains/ens/contracts/HashRegistrarSimplified.sol";
 import "@ensdomains/ens/contracts/Deed.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract DirectListing is Ownable  {
+contract DirectListing {
     event Offered(bytes32 indexed node, address indexed owner, uint256 price, uint256 expireAt);
     event Bought(bytes32 indexed node, address indexed newOwner, uint256 price);
     event Canceled(bytes32 indexed node);
@@ -23,7 +22,6 @@ contract DirectListing is Ownable  {
     mapping (bytes32 => Offering) public offerings;
 
     constructor(address _registrar) public {
-        owner = msg.sender;
         registrar = Registrar(_registrar);
     }
 
