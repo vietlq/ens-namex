@@ -29,7 +29,7 @@ contract DirectListing is Ownable  {
     }
     
     function offer(bytes32 _node, uint256 _price, uint256 _expireAt) external {
-        offerings.add(_node, Offering(msg.sender, _price, _expireAt));
+        offerings[_node] = Offering(msg.sender, _price, _expireAt);
     }
 
     function cancel(bytes32 _node) external {
