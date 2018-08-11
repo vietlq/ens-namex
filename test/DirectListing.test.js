@@ -91,15 +91,16 @@ contract('DirectListing', function (accounts) {
         const nodeEntryAfterAuction4 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction4.toString(), '1', 'Bad nodeEntryAfterAuction4');
 
-        registrar.unsealBid(testDomain.sha3, web3.toWei(1, 'ether'), web3.sha3('secret'), {from: accounts[0], gas: 500000});
+        const unsealBidResult = await registrar.unsealBid(testDomain.sha3, web3.toWei(1, 'ether'), web3.sha3('secret'), {from: accounts[0], gas: 500000});
+        console.log('unsealBidResult => ', unsealBidResult, unsealBidResult.receipt.logs[0], unsealBidResult.logs[0].args);
 
         const nodeEntryAfterAuction5 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction5.toString(), '1', 'Bad nodeEntryAfterAuction5');
+        assert.strictEqual(nodeEntryAfterAuction5.toString(), '4', 'Bad nodeEntryAfterAuction5');
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
         const nodeEntryAfterAuction6 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction6.toString(), '1', 'Bad nodeEntryAfterAuction6');
+        assert.strictEqual(nodeEntryAfterAuction6.toString(), '4', 'Bad nodeEntryAfterAuction6');
 
 
         // const event = contract.Offered({
