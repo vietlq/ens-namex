@@ -57,9 +57,9 @@ contract('DirectListing', function (accounts) {
         const TIME_3_DAYS = 3 * 24 * 60 * 60 + 1;
         await sendRpc('evm_increaseTime', [TIME_80_WEEKS]);
 
-        const nodeEntryBeforeAuction = (await registrar.entries(testDomain.sha3))[0];
+        const nodeEntryBeforeStartAuction = (await registrar.entries(testDomain.sha3))[0];
 
-        assert.strictEqual(nodeEntryBeforeAuction.toString(), '5', 'Bad nodeEntryBeforeAuction');
+        assert.strictEqual(nodeEntryBeforeStartAuction.toString(), '5', 'Bad nodeEntryBeforeStartAuction');
 
         console.log(`About to start the auction for ${theDomainName}`);
         const startAuctionResult = await registrar.startAuction(testDomain.sha3, {
@@ -68,15 +68,15 @@ contract('DirectListing', function (accounts) {
         });
         console.log('registrar.startAuction => ', startAuctionResult, startAuctionResult.receipt.logs[0], startAuctionResult.logs[0].args);
 
-        const nodeEntryAfterAuction = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction.toString(), '1', 'Bad nodeEntryAfterAuction');
+        const nodeEntryAfterStartAuction = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryAfterStartAuction.toString(), '1', 'Bad nodeEntryAfterStartAuction');
 
         //////// Move 2 days and start bidding ////////
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
-        const nodeEntryAfterAuction2 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction2.toString(), '1', 'Bad nodeEntryAfterAuction2');
+        const nodeEntryBeforeSealBid = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryBeforeSealBid.toString(), '1', 'Bad nodeEntryBeforeSealBid');
 
         // Place the bid (the real bid is 1 ETH but is concealed as 2 ETH)
         const sealedBid = await registrar.shaBid(testDomain.sha3, initialDomainOwner, web3.toWei(1, 'ether'), web3.sha3('secret'));
@@ -84,21 +84,21 @@ contract('DirectListing', function (accounts) {
         const newBidResult = await registrar.newBid(sealedBid, {from: initialDomainOwner, value: web3.toWei(2, 'ether'), gas: 500000});
         console.log('newBidResult => ', newBidResult, newBidResult.receipt.logs[0], newBidResult.logs[0].args);
 
-        const nodeEntryAfterAuction3 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction3.toString(), '1', 'Bad nodeEntryAfterAuction3');
+        const nodeEntryAfterSealBid = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryAfterSealBid.toString(), '1', 'Bad nodeEntryAfterSealBid');
 
         //////// Move 2 days and reveal the bid ////////
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
-        const nodeEntryAfterAuction4 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction4.toString(), '1', 'Bad nodeEntryAfterAuction4');
+        const nodeEntryBeforeUnsealBid = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryBeforeUnsealBid.toString(), '1', 'Bad nodeEntryBeforeUnsealBid');
 
         const unsealBidResult = await registrar.unsealBid(testDomain.sha3, web3.toWei(1, 'ether'), web3.sha3('secret'), {from: initialDomainOwner, gas: 500000});
         console.log('unsealBidResult => ', unsealBidResult, unsealBidResult.receipt.logs[0], unsealBidResult.logs[0].args);
 
-        const nodeEntryAfterAuction5 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction5.toString(), '4', 'Bad nodeEntryAfterAuction5');
+        const nodeEntryAfterUnsealBid = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryAfterUnsealBid.toString(), '4', 'Bad nodeEntryAfterUnsealBid');
 
         //////// Move 2 days and finalize the auction ////////
 
@@ -107,14 +107,14 @@ contract('DirectListing', function (accounts) {
         // TODO: deedContract.at(registrar.entries(web3.sha3('name'))[1]).owner();
         // TODO: web3.fromWei(registrar.entries(web3.sha3('name'))[4], 'ether');
 
-        const nodeEntryAfterAuction6 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction6.toString(), '4', 'Bad nodeEntryAfterAuction6');
+        const nodeEntryBeforeFinalizeAuction = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryBeforeFinalizeAuction.toString(), '4', 'Bad nodeEntryBeforeFinalizeAuction');
 
         const finalizeAuctionResult = await registrar.finalizeAuction(testDomain.sha3, {from: initialDomainOwner, gas: 500000});
         console.log('finalizeAuctionResult => ', finalizeAuctionResult, finalizeAuctionResult.receipt.logs[0], finalizeAuctionResult.logs[0].args);
 
-        const nodeEntryAfterAuction7 = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryAfterAuction7.toString(), '2', 'Bad nodeEntryAfterAuction7');
+        const nodeEntryAfterFinalizeAuction = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryAfterFinalizeAuction.toString(), '2', 'Bad nodeEntryAfterFinalizeAuction');
 
         //////// Transfer the winning deed to the winner ////////
         /*
