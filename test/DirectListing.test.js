@@ -52,8 +52,6 @@ contract('DirectListing', function (accounts) {
         assert.strictEqual(await ens.owner(rootNode.sha3), "0x0000000000000000000000000000000000000000");
         assert.strictEqual(await ens.resolver(rootNode.sha3), "0x0000000000000000000000000000000000000000");
 
-        const contract = await DirectListing.new(registrar.address);
-
         const TIME_80_WEEKS = 80 * 7 * 24 * 60 * 60;
         const TIME_2_DAYS = 2 * 24 * 60 * 60 + 1;
         const TIME_3_DAYS = 3 * 24 * 60 * 60 + 1;
@@ -158,6 +156,18 @@ contract('DirectListing', function (accounts) {
         //assert.strictEqual(await ens.owner(testDomain.namehash), initialDomainOwner);
         //assert.strictEqual(await ens.resolver(testDomain.namehash), resolverAddress);
 
+        //////// Deposit the domain from the owner to the DirectListing contract ////////
+
+        const contract = await DirectListing.new(registrar.address);
+
+        const depositDomainResult = await registrar.transfer(testDomain.sha3, contract.address, {from: initialDomainOwner});
+        console.log('depositDomainResult => ', depositDomainResult, depositDomainResult.receipt.logs[0], depositDomainResult.receipt.logs[1]);
+
+        const theDeedOwner3 = await theDeed.owner();
+        console.log('theDeedOwner3 => ', theDeedOwner3);
+        assert.strictEqual(contract.address, theDeedOwner3);
+        assert.strictEqual(await theDeed.previousOwner(), initialDomainOwner);
+
         // const event = contract.Offered({
         //     _from: initialDomainOwner
         // }, {
@@ -172,9 +182,9 @@ contract('DirectListing', function (accounts) {
         //         resolve(result);
         //     });
         // }).then((result) => {
-        //     assert.equal(result.args.owner, initialDomainOwner, 'Should have matched the creator');
-        //     assert.equal(result.args.price, price, 'Should have matched the offered price');
-        //     assert.equal(result.args.node, testDomain.sha3, 'Should have matched the matched label node');
+        //     assert.strictEqual(result.args.owner, initialDomainOwner, 'Should have matched the creator');
+        //     assert.strictEqual(result.args.price, price, 'Should have matched the offered price');
+        //     assert.strictEqual(result.args.node, testDomain.sha3, 'Should have matched the matched label node');
         // });
 
         // const p2 = contract.offer(testDomain.sha3, price, 10, {
