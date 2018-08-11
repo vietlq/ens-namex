@@ -68,22 +68,33 @@ contract('DirectListing', function (accounts) {
         const nodeEntryAfterAuction = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction.toString(), '1', 'Bad nodeEntryAfterAuction');
 
-        //assert.strictEqual(nodeEntryBeforeAuction.toString(), '1', 'Bad nodeEntryBeforeAuction');
+        //////// Move 2 days and start bidding ////////
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
         const nodeEntryAfterAuction2 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction2.toString(), '1', 'Bad nodeEntryAfterAuction2');
 
-        console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
+        // Place the bid (the real bid is 1 ETH but is concealed as 2 ETH)
+        const sealedBid = await registrar.shaBid(testDomain.sha3, accounts[0], web3.toWei(1, 'ether'), web3.sha3('secret'));
+        console.log('sealedBid => ', sealedBid);
+        const newBidResult = await registrar.newBid(sealedBid, {from: accounts[0], value: web3.toWei(2, 'ether'), gas: 500000});
+        console.log('newBidResult => ', newBidResult, newBidResult.receipt.logs[0], newBidResult.logs[0].args);
 
         const nodeEntryAfterAuction3 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction3.toString(), '1', 'Bad nodeEntryAfterAuction3');
+
+        //////// Move 2 days and reveal the bid ////////
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
         const nodeEntryAfterAuction4 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction4.toString(), '1', 'Bad nodeEntryAfterAuction4');
+
+        console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
+
+        const nodeEntryAfterAuction5 = (await registrar.entries(testDomain.sha3))[0];
+        assert.strictEqual(nodeEntryAfterAuction5.toString(), '1', 'Bad nodeEntryAfterAuction5');
 
 
         // const event = contract.Offered({
