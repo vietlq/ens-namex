@@ -17,7 +17,7 @@ contract('DirectListing', function (accounts) {
         });
 
         const price = 10;
-        const node = '0x0123';
+        const node = '0x0123000000000000000000000000000000000000000000000000000000000000';
 
         const p1 = new Promise((resolve, reject) => {
             event.watch((error, result) => {

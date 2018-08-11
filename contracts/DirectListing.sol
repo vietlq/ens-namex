@@ -26,12 +26,12 @@ contract DirectListing {
     }
 
     // https://ethereum.stackexchange.com/questions/7853/is-the-block-timestamp-value-in-solidity-seconds-or-milliseconds
-    function isOffered(bytes32 _hash) view returns (bool) {
+    function isOffered(bytes32 _hash) public view returns (bool) {
         return (offerings[_hash].nodeOwner != 0x0 && offerings[_hash].expireAt >= block.timestamp);
     }
     
     function offer(bytes32 _hash, uint256 _price, uint256 _expireAt) external {
-        var (a, deedAddr, b, c, d) = registrar.entries(_hash);
+        var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
 
         require(deedAddr != 0x0 && deed.previousOwner() == msg.sender && deed.owner() == address(this));
@@ -48,7 +48,7 @@ contract DirectListing {
 
     function cancelOffer(bytes32 _hash) external {
         // transfer back the domain to the owner
-        var (a, deedAddr, b, c, d) = registrar.entries(_hash);
+        var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
 
         // https://ethereum.stackexchange.com/questions/28972/who-is-msg-sender-when-calling-a-contract-from-a-contract
@@ -61,7 +61,7 @@ contract DirectListing {
 
     function cancelOfferAndWithdraw(bytes32 _hash) external {
         // transfer back the domain to the owner
-        var (a, deedAddr, b, c, d) = registrar.entries(_hash);
+        var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
 
         require(deedAddr != 0x0 && deed.previousOwner() == msg.sender && deed.owner() == address(this));
@@ -80,17 +80,5 @@ contract DirectListing {
 
     function buy(bytes32 _hash) external payable {
         require(isOffered(_hash) && msg.value >= offerings[_hash].price);
-
-        var (a, deedAddr, b, c, d) = registrar.entries(_hash);
-        var deed = Deed(deedAddr);
-        require(deedAddr != 0x0 && deed.previousOwner() == offerings[_hash].nodeOwner && deed.owner() == address(this));
-
-        offerings[_hash].nodeOwner.transfer(msg.value);
-
-        registrar.transfer(_hash, msg.sender);
-
-        delete offerings[_hash];
-
-        emit Bought(_hash, msg.sender, msg.value);
     }
 }
