@@ -26,11 +26,12 @@ contract('DirectListing', function (accounts) {
         const registrar = await Registrar.new(ens.address, 0, 0);
         const contract = await DirectListing.new(registrar.address);
 
-        console.log('web3 => ', web3);
-        console.log(web3);
+        //console.log('web3 => ', web3);
+        //console.log(web3);
         const TIME_80_WEEKS = 80*7*24*60*60;
         const advance80weeksResult = await sendRpc('evm_increaseTime', [TIME_80_WEEKS]);
-        assert(advance80weeksResult.result == TIME_80_WEEKS);
+        console.log("advance80weeksResult => ", advance80weeksResult);
+        //assert(parseInt(advance80weeksResult.result) == TIME_80_WEEKS);
 
         const event = contract.Offered({
             _from: accounts[0]
