@@ -1,5 +1,5 @@
 const ENS = artifacts.require("./ens/ENSRegistry.sol");
-const FIFSRegistrar = artifacts.require('./ens/FIFSRegistrar.sol');
+const FIFSRegistrar = artifacts.require('./ens/Registrar');
 
 // Currently the parameter('./ContractName') is only used to imply
 // the compiled contract JSON file name. So even though `Registrar.sol` is

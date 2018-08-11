@@ -1,12 +1,12 @@
-var DirectListing = artifacts.require('./DirectListing.sol');
-var Registrar = artifacts.require('./HashRegistrarSimplified.sol');
-var ENS = artifacts.require('./ENSRegistry.sol');
+var DirectListing = artifacts.require('./DirectListing');
+var Registrar = artifacts.require('./Registrar');
+var ENS = artifacts.require('./ENSRegistry');
 
 contract('DirectListing', function (accounts) {
 
     it('Offer', () => {
-        ENS.new().then(ens => {
-            return Registrar.new(ens.address, 0);
+        return ENS.new().then(ens => {
+            return Registrar.new(ens.address, 0, 0);
         }).then(registrar => {
 
             return DirectListing.new(registrar.address).then((contract) => {
