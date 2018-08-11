@@ -28,9 +28,9 @@ contract('DirectListing', function (accounts) {
 
         console.log('web3 => ', web3);
         console.log(web3);
-        const advance80weeks = await sendRpc('evm_increaseTime', [80*7*24*60*60]);
-        console.log(advance80weeks);
-        console.log('evm_increaseTime');
+        const TIME_80_WEEKS = 80*7*24*60*60;
+        const advance80weeksResult = await sendRpc('evm_increaseTime', [TIME_80_WEEKS]);
+        assert(advance80weeksResult.result == TIME_80_WEEKS);
 
         const event = contract.Offered({
             _from: accounts[0]
