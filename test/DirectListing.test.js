@@ -2,12 +2,35 @@ var DirectListing = artifacts.require('./DirectListing');
 var Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
 var ENS = artifacts.require('@ensdomains/ens/contracts/ENSRegistry');
 
+// https://ethereum.stackexchange.com/questions/21509/truffle-testrpc-time-manipulation
+// https://ethereum.stackexchange.com/questions/15755/simulating-the-passage-of-time-with-testrpc
+// https://github.com/DigixGlobal/tempo/blob/master/lib/index.js
+
+function sendRpc(method, params) {
+    return new Promise(function (resolve) {
+        web3.currentProvider.sendAsync({
+            jsonrpc: '2.0',
+            method: method,
+            params: params || [],
+            id: new Date().getTime()
+        }, function (err, res) {
+            resolve(res);
+        });
+    });
+}
+
 contract('DirectListing', function (accounts) {
 
     it('Offer', async () => {
         const ens = await ENS.new();
         const registrar = await Registrar.new(ens.address, 0, 0);
         const contract = await DirectListing.new(registrar.address);
+
+        console.log('web3 => ', web3);
+        console.log(web3);
+        const advance80weeks = await sendRpc('evm_increaseTime', [80*7*24*60*60]);
+        console.log(advance80weeks);
+        console.log('evm_increaseTime');
 
         const event = contract.Offered({
             _from: accounts[0]
