@@ -1,11 +1,11 @@
-const ENS = artifacts.require("./ens/ENSRegistry.sol");
-const FIFSRegistrar = artifacts.require('./ens/Registrar');
+const ENS = artifacts.require("@ensdomains/ens/contracts/ENSRegistry");
+const FIFSRegistrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
 
 // Currently the parameter('./ContractName') is only used to imply
 // the compiled contract JSON file name. So even though `Registrar.sol` is
 // not existed, it's valid to put it here.
 // TODO: align the contract name with the source code file name.
-const Registrar = artifacts.require('./ens/Registrar.sol');
+const Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
 const web3 = new(require('web3'))();
 const namehash = require('eth-ens-namehash');
 

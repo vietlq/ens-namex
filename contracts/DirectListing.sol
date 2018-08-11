@@ -1,8 +1,8 @@
 pragma solidity 0.4.24;
 
-import "./ens/ENS.sol";
-import "./ens/HashRegistrarSimplified.sol";
-import "./ens/Deed.sol";
+import "@ensdomains/ens/contracts/ENS.sol";
+import "@ensdomains/ens/contracts/HashRegistrarSimplified.sol";
+import "@ensdomains/ens/contracts/Deed.sol";
 
 contract DirectListing {
     event Offered(bytes32 indexed node, address indexed owner, uint256 price, uint256 expireAt);
@@ -29,7 +29,7 @@ contract DirectListing {
     function isOffered(bytes32 _hash) public view returns (bool) {
         return (offerings[_hash].nodeOwner != 0x0 && offerings[_hash].expireAt >= block.timestamp);
     }
-    
+
     function offer(bytes32 _hash, uint256 _price, uint256 _expireAt) external {
         var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);

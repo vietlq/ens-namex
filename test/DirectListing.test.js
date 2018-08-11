@@ -1,6 +1,6 @@
 var DirectListing = artifacts.require('./DirectListing');
-var Registrar = artifacts.require('./Registrar');
-var ENS = artifacts.require('./ENSRegistry');
+var Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
+var ENS = artifacts.require('@ensdomains/ens/contracts/ENSRegistry');
 
 contract('DirectListing', function (accounts) {
 
