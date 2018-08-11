@@ -1,5 +1,7 @@
 pragma solidity 0.4.24;
 
+import "@ensdomains/ens/contracts/ENS";
+
 contract DirectListing {
     event Offered(bytes32 indexed node, address indexed owner, uint256 price, uint256 ttl);
     event Bought(bytes32 indexed node, address indexed newOwner, uint256 price);

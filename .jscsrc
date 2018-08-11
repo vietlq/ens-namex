@@ -1,0 +1,7 @@
+{
+    "validateIndentation"                      : 4,
+    "validateQuoteMarks"                       : "'",
+    "disallowMixedSpacesAndTabs"               : true,
+    "disallowTrailingWhitespace"               : true,
+    "requireLineFeedAtFileEnd"                 : true
+}

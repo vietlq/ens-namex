@@ -1,0 +1,14 @@
+{
+    "node": true,
+    "expr": true,
+    "esversion": 6,
+    "globals": {
+        "Promise": true,
+        "describe": true,
+        "it": true,
+        "before": true,
+        "beforeEach": true,
+        "after": true,
+        "afterEach": true
+    }
+}
