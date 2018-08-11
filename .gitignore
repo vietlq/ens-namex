@@ -13,4 +13,5 @@ bower_components/
 dist
 coverage
 .DS_store
+package-lock.json
 build/
