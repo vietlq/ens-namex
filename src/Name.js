@@ -1,6 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Alert, Table } from 'react-bootstrap'
+// import { drizzleConnect } from 'drizzle-react'
+import CustomContractData from './CustomContractData'
+import { utf8ToHex } from 'web3-utils'
+
+const transformStatus = value => {
+  return !!value.price ? <span>For sale</span> : <span>Unknown</span>
+}
 
 const Name = ({ match }) => (
   <div>
@@ -21,15 +28,32 @@ const Name = ({ match }) => (
       <tbody>
         <tr>
           <th>Status</th>
-          <td>For sale</td>
+          <td><CustomContractData contract="DirectListing" method="offerings" methodArgs={[utf8ToHex(match.params.name)]} transform={transformStatus} /></td>
         </tr>
         <tr>
-          <th>Other info</th>
-          <td>Yes</td>
+          <th>Owner</th>
+          <td><CustomContractData contract="DirectListing" method="offerings" methodArgs={[utf8ToHex(match.params.name)]} returnKey="nodeOwner" /></td>
+        </tr>
+        <tr>
+          <th>Price</th>
+          <td><CustomContractData contract="DirectListing" method="offerings" methodArgs={[utf8ToHex(match.params.name)]} returnKey="price" /></td>
+        </tr>
+        <tr>
+          <th>Expires at</th>
+          <td><CustomContractData contract="DirectListing" method="offerings" methodArgs={[utf8ToHex(match.params.name)]} returnKey="expireAt" /></td>
         </tr>
       </tbody>
     </Table>
   </div>
 )
+
+// const mapStateToProps = state => {
+//   return {
+//     drizzleStatus: state.drizzleStatus,
+//     SimpleStorage: state.contracts.DirectListing
+//   }
+// }
+
+// export default drizzleConnect(Name, mapStateToProps)
 
 export default Name

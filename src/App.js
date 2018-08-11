@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Navbar, Button, FormGroup, FormControl } from 'react-bootstrap'
-import { Route } from 'react-router'
+import { Route, Switch } from 'react-router'
 import { Link } from 'react-router-dom'
-import {LinkContainer} from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import { LoadingContainer } from 'drizzle-react-components'
 
 import List from './List'
 import Name from './Name'
@@ -35,9 +36,13 @@ class App extends Component {
           </Navbar.Collapse>
         </Navbar>
         <div className="container" style={ {marginTop: '80px'} }>
-          <Route exact path="/" component={List}/>
-          <Route exact path="/name/:name" component={Name}/>
-          <Route exact path="/name/:name/sell" component={Sell}/>
+          <LoadingContainer loadingComp={<p>Loading...</p>}>
+            <Switch>
+              <Route exact path="/" component={List}/>
+              <Route exact path="/name/:name" component={Name}/>
+              <Route exact path="/name/:name/sell" component={Sell}/>
+            </Switch>
+          </LoadingContainer>
         </div>
       </div>
     )
