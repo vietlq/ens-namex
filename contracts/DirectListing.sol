@@ -80,5 +80,17 @@ contract DirectListing {
 
     function buy(bytes32 _hash) external payable {
         require(isOffered(_hash) && msg.value >= offerings[_hash].price);
+
+        var (a, deedAddr, b, c, d) = registrar.entries(_hash);
+        var deed = Deed(deedAddr);
+        require(deedAddr != 0x0 && deed.previousOwner() == offerings[_hash].nodeOwner && deed.owner() == address(this));
+
+        offerings[_hash].nodeOwner.transfer(msg.value);
+
+        registrar.transfer(_hash, msg.sender);
+
+        delete offerings[_hash];
+
+        emit Bought(_hash, msg.sender, msg.value);
     }
 }
