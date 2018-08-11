@@ -21,7 +21,7 @@ function sendRpc(method, params) {
 }
 
 /**
- * Calculate root testDomain hashes given the top level domain(tld)
+ * Calculate root node hashes given the top level domain(tld)
  *
  * @param {string} tld plain text tld, for example: 'eth'
  */
@@ -35,8 +35,9 @@ function getRootNodeFromTLD(tld) {
 contract('DirectListing', function (accounts) {
 
     it('Offer', async () => {
-        var rootNode = getRootNodeFromTLD('eth');
+        const rootNode = getRootNodeFromTLD('eth');
         const theDomainName = 'testingname.eth';
+        const testDomain = getRootNodeFromTLD(theDomainName);
 
         const ens = await ENS.new();
 
@@ -52,37 +53,36 @@ contract('DirectListing', function (accounts) {
         const TIME_3_DAYS = 3 * 24 * 60 * 60 + 1;
         await sendRpc('evm_increaseTime', [TIME_80_WEEKS]);
 
-        const testDomain = web3.sha3(theDomainName);
-        const nodeEntryBeforeAuction = (await registrar.entries(testDomain))[0];
+        const nodeEntryBeforeAuction = (await registrar.entries(testDomain.sha3))[0];
         const price = 10;
 
         assert.strictEqual(nodeEntryBeforeAuction.toString(), '5', 'Bad nodeEntryBeforeAuction');
 
         console.log(`About to start the auction for ${theDomainName}`);
-        const p3 = await registrar.startAuction(testDomain, {
+        const p3 = await registrar.startAuction(testDomain.sha3, {
             from: accounts[0],
             gas: 100000
         });
         console.log('registrar.startAuction => ', p3, p3.receipt.logs[0], p3.logs[0].args);
 
-        const nodeEntryAfterAuction = (await registrar.entries(testDomain))[0];
+        const nodeEntryAfterAuction = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction.toString(), '1', 'Bad nodeEntryAfterAuction');
 
         //assert.strictEqual(nodeEntryBeforeAuction.toString(), '1', 'Bad nodeEntryBeforeAuction');
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
-        const nodeEntryAfterAuction2 = (await registrar.entries(testDomain))[0];
+        const nodeEntryAfterAuction2 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction2.toString(), '1', 'Bad nodeEntryAfterAuction2');
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
-        const nodeEntryAfterAuction3 = (await registrar.entries(testDomain))[0];
+        const nodeEntryAfterAuction3 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction3.toString(), '1', 'Bad nodeEntryAfterAuction3');
 
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
-        const nodeEntryAfterAuction4 = (await registrar.entries(testDomain))[0];
+        const nodeEntryAfterAuction4 = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryAfterAuction4.toString(), '1', 'Bad nodeEntryAfterAuction4');
 
 
@@ -102,10 +102,10 @@ contract('DirectListing', function (accounts) {
         // }).then((result) => {
         //     assert.equal(result.args.owner, accounts[0], 'Should have matched the creator');
         //     assert.equal(result.args.price, price, 'Should have matched the offered price');
-        //     assert.equal(result.args.testDomain, testDomain, 'Should have matched the matched label testDomain');
+        //     assert.equal(result.args.node, testDomain.sha3, 'Should have matched the matched label node');
         // });
 
-        // const p2 = contract.offer(testDomain, price, 10, {
+        // const p2 = contract.offer(testDomain.sha3, price, 10, {
         //     from: accounts[0]
         // });
 
