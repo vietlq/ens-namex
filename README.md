@@ -163,11 +163,10 @@ https://rinkeby.etherscan.io/tx/0x9ee2086bd4edd99c27221f99a40407287b293660f26b30
 
 ## Local Development
 
-With an already running local node:
+With an already running local node (or `ganache-cli`, or `ganache GUI`):
 
-1. `truffle migrate`
-2. `yarn cp-contracts`
-3. `yarn start`
+* `truffle migrate && yarn cp-contracts && yarn start`
+* OR: `npm run deploy && npm run cp-contracts && yarn start`
 
 ## Requirements
 

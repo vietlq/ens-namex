@@ -1,3 +1,4 @@
+const assert = require('assert');
 const namehash = require('eth-ens-namehash').hash;
 const Web3Utils = require('web3-utils');
 const keccak256 = Web3Utils.sha3;
