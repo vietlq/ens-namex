@@ -38,21 +38,67 @@ getRootNodeFromTLD(testingname.namex) =>  {
 
 registrar.shaBid
 ```
+VALUE: 0.01 ETH = '0x000000000000000000000000000000000000000000000000002386f26fc10000'
+keccak256('secret') => 0x65462b0520ef7d3df61b9992ed3bea0c56ead753be7c8b3614e0ce01e4cac41b
+
  decoded input 	{
-	"bytes32 hash": "0x09d5e21dcaff2c807ec99c756118ec2519c72627ded2e59c335ecfc98ef4b445",
+	"bytes32 hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
 	"address owner": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
-	"uint256 value": "1000000000000000000",
+	"uint256 value": "10000000000000000",
 	"bytes32 salt": "0x65462b0520ef7d3df61b9992ed3bea0c56ead753be7c8b3614e0ce01e4cac41b"
 }
  decoded output 	{
-	"0": "bytes32: 0x0c5586c4ac9b15385721e510f888c9444b542e3ad563eba32432d296c6490a35"
+	"0": "bytes32: 0xb7c50315bf101f44a6047abcf96064602331120f30f353158912890672be1c88"
 }
 
 registrar.startAuction
-https://rinkeby.etherscan.io/tx/0x2be276d3ff1d5c679a3c756c7dde8496bd909530743cdc8ffd3c978d69d4fd3d
+https://rinkeby.etherscan.io/tx/0x0b2001c807756c490484115836d28a4f989f35869d02355e68fbb84098eb6cf3
 
 registrar.newBid
-https://rinkeby.etherscan.io/tx/0x86e55ee0a5fddcb4f1967f9e625b5132764510892909a466b0127120a390784d
+https://rinkeby.etherscan.io/tx/0xd8cd55792259f93977fc790ab00934e8a7796d34c6efa2938a8b6180f2e3ea1e
+
+registrar.unsealBid
+https://rinkeby.etherscan.io/tx/0x3cfbb86d07417d9b12252eaf413680b74b0b8574d331c2459a7981e47e29ffcf
+
+registrar.finalizeAuction
+https://rinkeby.etherscan.io/tx/0x5dd6e7cc3f443f332d67648b3e54da7f2084c065706a2f96998f7a7ce1f17d16
+
+decoded input 	{
+	"bytes32 _hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9"
+}
+ decoded output 	 - 
+ logs 	[
+	{
+		"from": "0x14f0bcd639f9491bdd73278e7fac1134e7b58ad4",
+		"topic": "0xce0457fe73731f824cc272376169235128c118b49d344817417c6d108d155e82",
+		"event": "NewOwner",
+		"args": {
+			"0": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
+			"1": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"2": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
+			"node": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
+			"label": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"owner": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
+			"length": 3
+		}
+	},
+	{
+		"from": "0x1e14145c595c3a675772f81ba38390b4e3d20875",
+		"topic": "0x0f0c27adfd84b60b6f456b0e87cdccb1e5fb9603991588d87fa99f5b6b61e670",
+		"event": "HashRegistered",
+		"args": {
+			"0": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"1": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
+			"2": "10000000000000000",
+			"3": "1534082678",
+			"hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"owner": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
+			"value": "10000000000000000",
+			"registrationDate": "1534082678",
+			"length": 4
+		}
+	}
+]
 ```
 
 ## Local Development
