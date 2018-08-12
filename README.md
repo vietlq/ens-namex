@@ -99,6 +99,41 @@ decoded input 	{
 		}
 	}
 ]
+
+registrar.transfer
+https://rinkeby.etherscan.io/tx/0x9ee2086bd4edd99c27221f99a40407287b293660f26b3042405041e09d4b1d52
+
+ decoded input 	{
+	"bytes32 _hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+	"address newOwner": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093"
+}
+ decoded output 	 - 
+ logs 	[
+	{
+		"from": "0x124f70d53e15814e4c661ec2c7751caf909e4ac6",
+		"topic": "0xa2ea9883a321a3e97b8266c2b078bfeec6d50c711ed71f874a90d500ae2eaf36",
+		"event": "OwnerChanged",
+		"args": {
+			"0": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093",
+			"newOwner": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093",
+			"length": 1
+		}
+	},
+	{
+		"from": "0x14f0bcd639f9491bdd73278e7fac1134e7b58ad4",
+		"topic": "0xce0457fe73731f824cc272376169235128c118b49d344817417c6d108d155e82",
+		"event": "NewOwner",
+		"args": {
+			"0": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
+			"1": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"2": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093",
+			"node": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
+			"label": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"owner": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093",
+			"length": 3
+		}
+	}
+]
 ```
 
 ## Local Development
