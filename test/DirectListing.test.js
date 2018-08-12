@@ -52,10 +52,12 @@ contract('DirectListing', function (accounts) {
         assert.strictEqual(await ens.owner(rootNode.sha3), "0x0000000000000000000000000000000000000000");
         assert.strictEqual(await ens.resolver(rootNode.sha3), "0x0000000000000000000000000000000000000000");
 
-        const TIME_80_WEEKS = 80 * 7 * 24 * 60 * 60;
-        const TIME_2_DAYS = 2 * 24 * 60 * 60 + 1;
-        const TIME_3_DAYS = 3 * 24 * 60 * 60 + 1;
-        await sendRpc('evm_increaseTime', [TIME_80_WEEKS]);
+        // const TIME_AFTER_SOFT_LAUNCH = 80 * 7 * 24 * 60 * 60;
+        // const TIME_DELTA = 2 * 24 * 60 * 60 + 1;
+        const TIME_AFTER_SOFT_LAUNCH = 20;
+        const TIME_DELTA = 2 * 60 + 1;
+
+        await sendRpc('evm_increaseTime', [TIME_AFTER_SOFT_LAUNCH]);
 
         const nodeEntryBeforeStartAuction = (await registrar.entries(testDomain.sha3))[0];
 
@@ -73,7 +75,7 @@ contract('DirectListing', function (accounts) {
 
         //////// Move 2 days and start bidding ////////
 
-        console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
+        console.log(await sendRpc('evm_increaseTime', [TIME_DELTA]));
 
         const nodeEntryBeforeSealBid = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryBeforeSealBid.toString(), '1', 'Bad nodeEntryBeforeSealBid');
@@ -93,7 +95,7 @@ contract('DirectListing', function (accounts) {
 
         //////// Move 2 days and reveal the bid ////////
 
-        console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
+        console.log(await sendRpc('evm_increaseTime', [TIME_DELTA]));
 
         const nodeEntryBeforeUnsealBid = (await registrar.entries(testDomain.sha3))[0];
         assert.strictEqual(nodeEntryBeforeUnsealBid.toString(), '4', 'Bad nodeEntryBeforeUnsealBid');
@@ -109,7 +111,7 @@ contract('DirectListing', function (accounts) {
 
         //////// Move 2 days and finalize the auction ////////
 
-        console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
+        console.log(await sendRpc('evm_increaseTime', [TIME_DELTA]));
 
         // TODO: deedContract.at(registrar.entries(web3.sha3('name'))[1]).owner();
         // TODO: web3.fromWei(registrar.entries(web3.sha3('name'))[4], 'ether');
