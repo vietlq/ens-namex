@@ -10,7 +10,7 @@ const transformStatus = value => {
   return !!value.price ? <span>For sale</span> : <span>Unknown</span>
 }
 
-function namehash(name) {
+export function namehash(name) {
   var node = '0x0000000000000000000000000000000000000000000000000000000000000000';
   if (name !== '') {
       var labels = name.split(".");
