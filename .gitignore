@@ -16,4 +16,5 @@ coverage
 package-lock.json
 build/
 testrpc.db
+.private.json
 src/contracts
