@@ -53,20 +53,21 @@ function getNodeFromDomain(name, tld) {
 contract('DirectListing', function (accounts) {
 
     it('Offer', async () => {
-        const testDefaultTLD = 'eth';
         const testTLD = 'namex';
         const rootNode = getRootNodeFromTLD(testTLD);
+
+        const ens = await ENS.new();
+        const registrar = await Registrar.new(ens.address, rootNode.namehash, 0);
+        const directListing = await DirectListing.new(registrar.address);
+        const setSubnodeOwnerResult = await ens.setSubnodeOwner('0x0', rootNode.sha3, registrar.address);
+
+        const testDefaultTLD = 'eth';
         const theDomainName = 'testingname';
         const testDomain = getNodeFromDomain(theDomainName, testTLD);
         const initialDomainOwner = accounts[1];
 
         console.log(`getRootNodeFromTLD(${testTLD}) => `, rootNode);
         console.log(`getRootNodeFromTLD(${theDomainName}) => `, testDomain);
-
-        const ens = await ENS.new();
-        const registrar = await Registrar.new(ens.address, rootNode.namehash, 0);
-        const directListing = await DirectListing.new(registrar.address);
-        const setSubnodeOwnerResult = await ens.setSubnodeOwner('0x0', rootNode.sha3, registrar.address);
 
         console.log('ens.setSubnodeOwner => ', setSubnodeOwnerResult, setSubnodeOwnerResult.receipt.logs[0], setSubnodeOwnerResult.logs[0].args);
         assert.strictEqual(await ens.owner(rootNode.namehash), registrar.address);
