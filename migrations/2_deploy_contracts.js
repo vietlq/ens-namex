@@ -1,26 +1,23 @@
 // https://github.com/poanetwork/solidity-flattener
 
+const Deed = artifacts.require("@ensdomains/ens/contracts/Deed");
 const ENS = artifacts.require("@ensdomains/ens/contracts/ENSRegistry");
 // const Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
 const Registrar = artifacts.require('./ens/Registrar');
+
 const DirectListing = artifacts.require('./DirectListing');
 
 const web3 = new(require('web3'))();
 const namehash = require('eth-ens-namehash').hash;
 
-/**
- * Calculate root node hashes given the top level domain(tld)
- *
- * @param {string} tld plain text tld, for example: 'eth'
- */
-function getRootNodeFromTLD(tld) {
-    return {
-        namehash: namehash(tld),
-        sha3: web3.sha3(tld)
-    };
-}
+const LocalTestUtils = require('../utils/test-utils.js');
+//import { sendRpc, getRootNodeFromTLD, getNodeFromDomain, createDomainName } from "./utils/test-utils.js";
+const sendRpc = LocalTestUtils.sendRpc;
+const getRootNodeFromTLD = LocalTestUtils.getRootNodeFromTLD;
+const getNodeFromDomain = LocalTestUtils.getNodeFromDomain;
+const createDomainName = LocalTestUtils.createDomainName;
 
-module.exports = async function (deployer, network) {
+module.exports = async function (deployer, network, accounts) {
     // Use TLD .namex because .eth is already taken
     var tld = 'namex';
     console.log('network => ', network);
@@ -39,6 +36,13 @@ module.exports = async function (deployer, network) {
 
     // Create custom domains
     if (network == 'development') {
+        const testTLD = 'namex';
+        const theDomainName = 'testingname';
+        const initialDomainOwner = accounts[1];
 
+        var ens = ENS.at(ENS.address);
+        var registrar = Registrar.at(Registrar.address);
+
+        //const { theDeed } = await createDomainName(web3, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner);
     }
 };

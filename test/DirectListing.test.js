@@ -41,7 +41,7 @@ contract('DirectListing', function (accounts) {
         const testDomain = getNodeFromDomain(theDomainName, testTLD);
         const initialDomainOwner = accounts[1];
 
-        const { theDeed } = await createDomainName(web3, assert, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner);
+        const { theDeed } = await createDomainName(web3, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner);
 
         //////// Deposit the domain from the owner to the DirectListing contract ////////
 

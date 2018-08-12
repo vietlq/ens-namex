@@ -39,7 +39,7 @@ function getNodeFromDomain(name, tld) {
     };
 }
 
-async function createDomainName(web3, assert, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner) {
+async function createDomainName(web3, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner) {
     const rootNode = getRootNodeFromTLD(testTLD);
     const testDomain = getNodeFromDomain(theDomainName, testTLD);
 
