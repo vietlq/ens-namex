@@ -36,4 +36,9 @@ module.exports = async function (deployer, network) {
     // Deploy the DirectListing contract
     console.log('ENS.address => ', ENS.address);
     console.log('Registrar.address => ', Registrar.address);
+
+    // Create custom domains
+    if (network == 'development') {
+
+    }
 };
