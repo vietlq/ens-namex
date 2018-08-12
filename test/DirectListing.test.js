@@ -59,7 +59,7 @@ contract('DirectListing', function (accounts) {
 
         const nodeEntryBeforeStartAuction = (await registrar.entries(testDomain.sha3))[0];
 
-        assert.strictEqual(nodeEntryBeforeStartAuction.toString(), '5', 'Bad nodeEntryBeforeStartAuction');
+        assert.strictEqual(nodeEntryBeforeStartAuction.toString(), '0', 'Bad nodeEntryBeforeStartAuction');
 
         console.log(`About to start the auction for ${theDomainName}`);
         const startAuctionResult = await registrar.startAuction(testDomain.sha3, {
@@ -81,7 +81,11 @@ contract('DirectListing', function (accounts) {
         // Place the bid (the real bid is 1 ETH but is concealed as 2 ETH)
         const sealedBid = await registrar.shaBid(testDomain.sha3, initialDomainOwner, web3.toWei(1, 'ether'), web3.sha3('secret'));
         console.log('sealedBid => ', sealedBid);
-        const newBidResult = await registrar.newBid(sealedBid, {from: initialDomainOwner, value: web3.toWei(2, 'ether'), gas: 500000});
+        const newBidResult = await registrar.newBid(sealedBid, {
+            from: initialDomainOwner,
+            value: web3.toWei(2, 'ether'),
+            gas: 500000
+        });
         console.log('newBidResult => ', newBidResult, newBidResult.receipt.logs[0], newBidResult.logs[0].args);
 
         const nodeEntryAfterSealBid = (await registrar.entries(testDomain.sha3))[0];
@@ -92,9 +96,12 @@ contract('DirectListing', function (accounts) {
         console.log(await sendRpc('evm_increaseTime', [TIME_2_DAYS]));
 
         const nodeEntryBeforeUnsealBid = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryBeforeUnsealBid.toString(), '1', 'Bad nodeEntryBeforeUnsealBid');
+        assert.strictEqual(nodeEntryBeforeUnsealBid.toString(), '4', 'Bad nodeEntryBeforeUnsealBid');
 
-        const unsealBidResult = await registrar.unsealBid(testDomain.sha3, web3.toWei(1, 'ether'), web3.sha3('secret'), {from: initialDomainOwner, gas: 500000});
+        const unsealBidResult = await registrar.unsealBid(testDomain.sha3, web3.toWei(1, 'ether'), web3.sha3('secret'), {
+            from: initialDomainOwner,
+            gas: 500000
+        });
         console.log('unsealBidResult => ', unsealBidResult, unsealBidResult.receipt.logs[0], unsealBidResult.logs[0].args);
 
         const nodeEntryAfterUnsealBid = (await registrar.entries(testDomain.sha3))[0];
@@ -108,9 +115,12 @@ contract('DirectListing', function (accounts) {
         // TODO: web3.fromWei(registrar.entries(web3.sha3('name'))[4], 'ether');
 
         const nodeEntryBeforeFinalizeAuction = (await registrar.entries(testDomain.sha3))[0];
-        assert.strictEqual(nodeEntryBeforeFinalizeAuction.toString(), '4', 'Bad nodeEntryBeforeFinalizeAuction');
+        assert.strictEqual(nodeEntryBeforeFinalizeAuction.toString(), '2', 'Bad nodeEntryBeforeFinalizeAuction');
 
-        const finalizeAuctionResult = await registrar.finalizeAuction(testDomain.sha3, {from: initialDomainOwner, gas: 500000});
+        const finalizeAuctionResult = await registrar.finalizeAuction(testDomain.sha3, {
+            from: initialDomainOwner,
+            gas: 500000
+        });
         console.log('finalizeAuctionResult => ', finalizeAuctionResult, finalizeAuctionResult.receipt.logs[0], finalizeAuctionResult.logs[0].args);
 
         const nodeEntryAfterFinalizeAuction = (await registrar.entries(testDomain.sha3))[0];
@@ -135,7 +145,9 @@ contract('DirectListing', function (accounts) {
         console.log('theDeedOwner => ', theDeedOwner);
         assert.strictEqual(initialDomainOwner, theDeedOwner);
 
-        const transferDeedResult = await registrar.transfer(testDomain.sha3, initialDomainOwner, {from: initialDomainOwner});
+        const transferDeedResult = await registrar.transfer(testDomain.sha3, initialDomainOwner, {
+            from: initialDomainOwner
+        });
         console.log('transferDeedResult => ', transferDeedResult, transferDeedResult.receipt.logs[0], transferDeedResult.receipt.logs[1]);
 
         const theDeedOwner2 = await theDeed.owner();
@@ -159,7 +171,9 @@ contract('DirectListing', function (accounts) {
 
         const contract = await DirectListing.new(registrar.address);
 
-        const depositDomainResult = await registrar.transfer(testDomain.sha3, contract.address, {from: initialDomainOwner});
+        const depositDomainResult = await registrar.transfer(testDomain.sha3, contract.address, {
+            from: initialDomainOwner
+        });
         console.log('depositDomainResult => ', depositDomainResult, depositDomainResult.receipt.logs[0], depositDomainResult.receipt.logs[1]);
 
         const theDeedOwner3 = await theDeed.owner();
