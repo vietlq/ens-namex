@@ -62,8 +62,7 @@ contract('DirectListing', function (accounts) {
         const setSubnodeOwnerResult = await ens.setSubnodeOwner('0x0', rootNode.sha3, registrar.address);
         console.log('ens.setSubnodeOwner => ', setSubnodeOwnerResult, setSubnodeOwnerResult.receipt.logs[0], setSubnodeOwnerResult.logs[0].args);
         assert.strictEqual(await ens.owner(rootNode.namehash), registrar.address);
-        assert.strictEqual(await ens.owner(rootNode.sha3), "0x0000000000000000000000000000000000000000");
-        assert.strictEqual(await ens.resolver(rootNode.sha3), "0x0000000000000000000000000000000000000000");
+        assert.strictEqual(await ens.resolver(rootNode.namehash), "0x0000000000000000000000000000000000000000");
 
         // const TIME_AFTER_SOFT_LAUNCH = 80 * 7 * 24 * 60 * 60;
         // const TIME_DELTA = 2 * 24 * 60 * 60 + 1;
