@@ -27,6 +27,7 @@ function labelhash(label) {
 
 class Name extends Component {
   render() {
+    if (!this.props.match.params.name) return <p>Loading...</p>
     return (
       <div>
         <h2>{this.props.match.params.name}</h2>
@@ -98,7 +99,6 @@ Name.contextTypes = {
 
 const mapStateToProps = state => {
   return {
-    drizzleStatus: state.drizzleStatus,
     DirectListing: state.contracts.DirectListing,
     accounts: state.accounts
   }

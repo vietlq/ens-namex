@@ -8,11 +8,13 @@ import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import DirectListing from './DirectListing.json'
 import ENSRegistry from './ENSRegistry.json'
+import Registrar from './Registrar.json'
 
 const options = {
   contracts: [
     DirectListing,
-    ENSRegistry
+    ENSRegistry,
+    Registrar
   ]
 }
 
