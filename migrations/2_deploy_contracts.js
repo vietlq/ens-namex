@@ -1,3 +1,5 @@
+// https://github.com/poanetwork/solidity-flattener
+
 const ENS = artifacts.require("@ensdomains/ens/contracts/ENSRegistry");
 const FIFSRegistrar = artifacts.require('./ens/Registrar');
 const DirectListing = artifacts.require('./DirectListing');
