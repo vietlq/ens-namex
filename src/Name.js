@@ -22,7 +22,7 @@ export function namehash(name) {
 }
 
 function labelhash(label) {
-  return sha3(label.slice(0, -4))
+  return sha3(label.slice(0, -6))
 }
 
 class Name extends Component {

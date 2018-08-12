@@ -7,7 +7,7 @@ import CustomContractData from './CustomContractData'
 import { namehash } from './Name'
 
 function labelhash(label) {
-  return sha3(label.slice(0, -4))
+  return sha3(label.slice(0, -6))
 }
 
 class Sell extends Component {
