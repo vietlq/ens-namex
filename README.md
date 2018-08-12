@@ -65,7 +65,7 @@ https://rinkeby.etherscan.io/tx/0x3cfbb86d07417d9b12252eaf413680b74b0b8574d331c2
 	"uint256 _value": "10000000000000000",
 	"bytes32 _salt": "0x65462b0520ef7d3df61b9992ed3bea0c56ead753be7c8b3614e0ce01e4cac41b"
 }
- decoded output 	 - 
+ decoded output 	 -
  logs 	[
 	{
 		"from": "0x1e14145c595c3a675772f81ba38390b4e3d20875",
@@ -91,7 +91,7 @@ https://rinkeby.etherscan.io/tx/0x5dd6e7cc3f443f332d67648b3e54da7f2084c065706a2f
 decoded input 	{
 	"bytes32 _hash": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a"
 }
- decoded output 	 - 
+ decoded output 	 -
  logs 	[
 	{
 		"from": "0x14f0bcd639f9491bdd73278e7fac1134e7b58ad4",
@@ -132,7 +132,7 @@ https://rinkeby.etherscan.io/tx/0x9ee2086bd4edd99c27221f99a40407287b293660f26b30
 	"bytes32 _hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
 	"address newOwner": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093"
 }
- decoded output 	 - 
+ decoded output 	 -
  logs 	[
 	{
 		"from": "0x124f70d53e15814e4c661ec2c7751caf909e4ac6",
@@ -168,3 +168,7 @@ With an already running local node:
 1. `truffle migrate`
 2. `yarn cp-contracts`
 3. `yarn start`
+
+## Requirements
+
+* At least Ganache CLI v6.1.6 (ganache-core: 2.1.5). Older Ganache CLI has a bug in timing API
