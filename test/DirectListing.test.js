@@ -45,8 +45,8 @@ function getRootNodeFromTLD(tld) {
 
 function getNodeFromDomain(name, tld) {
     return {
+        sha3: web3.sha3(name),
         namehash: namehash(`${name}.${tld}`),
-        sha3: web3.sha3(name)
     };
 }
 
