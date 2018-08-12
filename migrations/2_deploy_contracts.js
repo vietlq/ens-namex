@@ -1,9 +1,10 @@
 // https://github.com/poanetwork/solidity-flattener
+
 const ENS = artifacts.require("@ensdomains/ens/contracts/ENSRegistry");
-const FIFSRegistrar = artifacts.require('./ens/Registrar');
+// const Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
+const Registrar = artifacts.require('./ens/Registrar');
 const DirectListing = artifacts.require('./DirectListing');
 
-const Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
 const web3 = new(require('web3'))();
 const namehash = require('eth-ens-namehash').hash;
 
