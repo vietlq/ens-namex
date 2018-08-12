@@ -45,7 +45,6 @@ function getRootNodeFromTLD(tld) {
 contract('DirectListing', function (accounts) {
 
     it('Offer', async () => {
-        console.log();
         const testDefaultTLD = 'eth';
         const testTLD = 'namex';
         const rootNode = getRootNodeFromTLD(testTLD);
@@ -54,6 +53,7 @@ contract('DirectListing', function (accounts) {
         const initialDomainOwner = accounts[1];
 
         console.log(`getRootNodeFromTLD(${testTLD}) => `, rootNode);
+        console.log(`getRootNodeFromTLD(${theDomainName}) => `, testDomain);
 
         const ens = await ENS.new();
 
