@@ -42,14 +42,21 @@ function getRootNodeFromTLD(tld) {
     };
 }
 
+function getNodeFromDomain(name, tld) {
+    return {
+        namehash: namehash(`${name}.${tld}`),
+        sha3: web3.sha3(name)
+    };
+}
+
 contract('DirectListing', function (accounts) {
 
     it('Offer', async () => {
         const testDefaultTLD = 'eth';
         const testTLD = 'namex';
         const rootNode = getRootNodeFromTLD(testTLD);
-        const theDomainName = `testingname.${testTLD}`;
-        const testDomain = getRootNodeFromTLD(theDomainName);
+        const theDomainName = 'testingname';
+        const testDomain = getNodeFromDomain(theDomainName, testTLD);
         const initialDomainOwner = accounts[1];
 
         console.log(`getRootNodeFromTLD(${testTLD}) => `, rootNode);
@@ -170,7 +177,7 @@ contract('DirectListing', function (accounts) {
 
         //////// Check the owner and resolver ////////
 
-        assert.strictEqual(await ens.owner(testDomain.namehash), "0x0000000000000000000000000000000000000000");
+        assert.strictEqual(await ens.owner(testDomain.namehash), "0x1daa654cfbc28f375e0f08f329de219fff50c765");
         assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
 
         //await ens.setOwner(testDomain.namehash, initialDomainOwner, {from: initialDomainOwner});
