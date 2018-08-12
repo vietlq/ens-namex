@@ -27,13 +27,13 @@ module.exports = async function (deployer, network) {
 
     var rootNode = getRootNodeFromTLD(tld);
 
-    await deployer.deploy(ENS);
-    await deployer.deploy(Registrar, ENS.address, rootNode.namehash, 0);
+    deployer.deploy(ENS);
+    deployer.deploy(Registrar, ENS.address, rootNode.namehash, 0);
+    deployer.deploy(DirectListing, Registrar.address);
+
     await ENS.at(ENS.address).setSubnodeOwner('0x0', rootNode.sha3, Registrar.address);
 
     // Deploy the DirectListing contract
     console.log('ENS.address => ', ENS.address);
     console.log('Registrar.address => ', Registrar.address);
-
-    await deployer.deploy(DirectListing, Registrar.address);
 };
