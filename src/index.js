@@ -7,18 +7,20 @@ import './index.css'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import DirectListing from './DirectListing.json'
+import ENSRegistry from './ENSRegistry.json'
 
 const options = {
   contracts: [
-    DirectListing
+    DirectListing,
+    ENSRegistry
   ]
 }
 
 ReactDOM.render((
-  <DrizzleProvider options={options}>
     <BrowserRouter>
-      <App/>
+      <DrizzleProvider options={options}>
+        <App/>
+      </DrizzleProvider>
     </BrowserRouter>
-  </DrizzleProvider>
 ), document.getElementById('root'))
 registerServiceWorker()

@@ -10,6 +10,8 @@ class CustomContractData extends Component {
   constructor(props, context) {
     super(props)
 
+    // console.log(context)
+
     this.contracts = context.drizzle.contracts
 
     // Get the contract ABI
@@ -55,8 +57,8 @@ class CustomContractData extends Component {
       displayData = this.context.drizzle.web3.utils.hexToAscii(displayData)
     }
 
-    if (typeof this.props.transform === 'function') {
-      return this.props.transform(displayData)
+    if (typeof this.props.render === 'function') {
+      return this.props.render(displayData)
     }
 
     // If return value is an array

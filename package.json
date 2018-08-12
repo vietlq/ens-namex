@@ -26,6 +26,7 @@
     "drizzle-react-components": "^1.2.0",
     "eth-ens-namehash": "^2.0.8",
     "eth-random": "0.0.4-alpha.1",
+    "ethereum-ens": "^0.7.4",
     "ethereumjs-testrpc": "6.0.1",
     "openzeppelin-solidity": "^1.11.0",
     "react": "^16.4.2",
