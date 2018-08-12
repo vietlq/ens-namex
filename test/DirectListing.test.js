@@ -177,12 +177,12 @@ contract('DirectListing', function (accounts) {
 
         //////// Check the owner and resolver ////////
 
-        assert.strictEqual(await ens.owner(testDomain.namehash), "0x1daa654cfbc28f375e0f08f329de219fff50c765");
+        assert.strictEqual(await ens.owner(testDomain.namehash), initialDomainOwner);
         assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
 
-        //await ens.setOwner(testDomain.namehash, initialDomainOwner, {from: initialDomainOwner});
-        //assert.strictEqual(await ens.owner(testDomain.namehash), initialDomainOwner);
-        //assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
+        await ens.setOwner(testDomain.namehash, initialDomainOwner, {from: initialDomainOwner});
+        assert.strictEqual(await ens.owner(testDomain.namehash), initialDomainOwner);
+        assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
 
         //await ens.setResolver(testDomain.namehash, resolverAddress, {from: initialDomainOwner});
         //assert.strictEqual(await ens.owner(testDomain.namehash), initialDomainOwner);
@@ -196,6 +196,8 @@ contract('DirectListing', function (accounts) {
             from: initialDomainOwner
         });
         console.log('depositDomainResult => ', depositDomainResult, depositDomainResult.receipt.logs[0], depositDomainResult.receipt.logs[1]);
+        assert.strictEqual(await ens.owner(testDomain.namehash), contract.address);
+        assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
 
         const theDeedOwner3 = await theDeed.owner();
         console.log('theDeedOwner3 => ', theDeedOwner3);
