@@ -67,7 +67,7 @@ contract('DirectListing', function (accounts) {
         const initialDomainOwner = accounts[1];
 
         console.log(`getRootNodeFromTLD(${testTLD}) => `, rootNode);
-        console.log(`getNodeFromDomain(${theDomainName}) => `, testDomain);
+        console.log(`getNodeFromDomain(${theDomainName}, ${testTLD}) => `, testDomain);
 
         console.log('ens.setSubnodeOwner => ', setSubnodeOwnerResult, setSubnodeOwnerResult.receipt.logs[0], setSubnodeOwnerResult.logs[0].args);
         assert.strictEqual(await ens.owner(rootNode.namehash), registrar.address);
