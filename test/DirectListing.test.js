@@ -50,7 +50,7 @@ function getNodeFromDomain(name, tld) {
     };
 }
 
-async function createDomainName(assert, accounts, theDomainName, testTLD, ens, registrar, initialDomainOwner) {
+async function createDomainName(assert, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner) {
     const rootNode = getRootNodeFromTLD(testTLD);
     const testDomain = getNodeFromDomain(theDomainName, testTLD);
 
@@ -197,7 +197,7 @@ contract('DirectListing', function (accounts) {
         const testDomain = getNodeFromDomain(theDomainName, testTLD);
         const initialDomainOwner = accounts[1];
 
-        const { theDeed } = await createDomainName(assert, accounts, theDomainName, testTLD, ens, registrar, initialDomainOwner);
+        const { theDeed } = await createDomainName(assert, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner);
 
         //////// Deposit the domain from the owner to the DirectListing contract ////////
 
