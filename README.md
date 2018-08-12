@@ -42,13 +42,13 @@ VALUE: 0.01 ETH = '0x000000000000000000000000000000000000000000000000002386f26fc
 keccak256('secret') => 0x65462b0520ef7d3df61b9992ed3bea0c56ead753be7c8b3614e0ce01e4cac41b
 
  decoded input 	{
-	"bytes32 hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+	"bytes32 hash": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 	"address owner": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
 	"uint256 value": "10000000000000000",
 	"bytes32 salt": "0x65462b0520ef7d3df61b9992ed3bea0c56ead753be7c8b3614e0ce01e4cac41b"
 }
  decoded output 	{
-	"0": "bytes32: 0xb7c50315bf101f44a6047abcf96064602331120f30f353158912890672be1c88"
+	"0": "bytes32: 0x7febbe090d84944174217995751fba9281a04dac1cfb741b02e8244af7c1e62d"
 }
 
 registrar.startAuction
@@ -60,11 +60,36 @@ https://rinkeby.etherscan.io/tx/0xd8cd55792259f93977fc790ab00934e8a7796d34c6efa2
 registrar.unsealBid
 https://rinkeby.etherscan.io/tx/0x3cfbb86d07417d9b12252eaf413680b74b0b8574d331c2459a7981e47e29ffcf
 
+ decoded input 	{
+	"bytes32 _hash": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
+	"uint256 _value": "10000000000000000",
+	"bytes32 _salt": "0x65462b0520ef7d3df61b9992ed3bea0c56ead753be7c8b3614e0ce01e4cac41b"
+}
+ decoded output 	 - 
+ logs 	[
+	{
+		"from": "0x1e14145c595c3a675772f81ba38390b4e3d20875",
+		"topic": "0x7b6c4b278d165a6b33958f8ea5dfb00c8c9d4d0acf1985bef5d10786898bc3e7",
+		"event": "BidRevealed",
+		"args": {
+			"0": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
+			"1": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
+			"2": "10000000000000000",
+			"3": 2,
+			"hash": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
+			"owner": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
+			"value": "10000000000000000",
+			"status": 2,
+			"length": 4
+		}
+	}
+]
+
 registrar.finalizeAuction
 https://rinkeby.etherscan.io/tx/0x5dd6e7cc3f443f332d67648b3e54da7f2084c065706a2f96998f7a7ce1f17d16
 
 decoded input 	{
-	"bytes32 _hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9"
+	"bytes32 _hash": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a"
 }
  decoded output 	 - 
  logs 	[
@@ -74,10 +99,10 @@ decoded input 	{
 		"event": "NewOwner",
 		"args": {
 			"0": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
-			"1": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"1": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 			"2": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
 			"node": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
-			"label": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"label": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 			"owner": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
 			"length": 3
 		}
@@ -87,14 +112,14 @@ decoded input 	{
 		"topic": "0x0f0c27adfd84b60b6f456b0e87cdccb1e5fb9603991588d87fa99f5b6b61e670",
 		"event": "HashRegistered",
 		"args": {
-			"0": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"0": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 			"1": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
 			"2": "10000000000000000",
-			"3": "1534082678",
-			"hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"3": "1534089608",
+			"hash": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 			"owner": "0x5b163D25EBB842e4DD09697e62Ff3927096B2C5A",
 			"value": "10000000000000000",
-			"registrationDate": "1534082678",
+			"registrationDate": "1534089608",
 			"length": 4
 		}
 	}
