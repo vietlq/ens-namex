@@ -144,7 +144,7 @@ contract Registrar {
     // uint32 constant totalAuctionLength = 5 days;
     // uint32 constant revealPeriod = 48 hours;
     // uint32 public constant launchLength = 8 weeks;
-    uint32 constant totalAuctionLength = 2 minutes;
+    uint32 constant totalAuctionLength = 5 minutes;
     uint32 constant revealPeriod = 2 minutes;
     uint32 public constant launchLength = 10 seconds;
 
