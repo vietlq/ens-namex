@@ -1,5 +1,6 @@
 var DirectListing = artifacts.require('./DirectListing');
-var Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
+var Registrar = artifacts.require('./Registrar');
+// var Registrar = artifacts.require('./Registrar');
 var ENS = artifacts.require('@ensdomains/ens/contracts/ENSRegistry');
 var Deed = artifacts.require('@ensdomains/ens/contracts/Deed');
 var namehash = require('eth-ens-namehash').hash;

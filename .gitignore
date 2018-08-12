@@ -17,3 +17,4 @@ package-lock.json
 build/
 testrpc.db
 .private.json
+ganache-logs

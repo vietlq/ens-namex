@@ -32,7 +32,7 @@ module.exports = async function (deployer, network) {
 
     // Deploy the DirectListing contract
     console.log('ENS.address => ', ENS.address);
-    console.log('Registrar.address => ', ENS.address);
+    console.log('Registrar.address => ', Registrar.address);
 
     await deployer.deploy(DirectListing, Registrar.address);
 };
