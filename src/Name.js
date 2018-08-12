@@ -81,7 +81,6 @@ class Name extends Component {
             </tr>
           </tbody>
         </Table>
-        {console.log(this.context)}
         <CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
           data => data.nodeOwner !== this.props.accounts[0] && !!Number(data.price) && (
             <Button bsStyle="primary" bsSize="large" onClick={() => this.context.drizzle.contracts.DirectListing.methods.buy(labelhash(this.props.match.params.name)).send({ value: data.price })}>

@@ -6,9 +6,9 @@ import { DrizzleProvider } from 'drizzle-react'
 import './index.css'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
-import DirectListing from './DirectListing.json'
-import ENSRegistry from './ENSRegistry.json'
-import Registrar from './Registrar.json'
+import DirectListing from './contracts/DirectListing.json'
+import ENSRegistry from './contracts/ENSRegistry.json'
+import Registrar from './contracts/Registrar.json'
 
 const options = {
   contracts: [
@@ -19,10 +19,10 @@ const options = {
 }
 
 ReactDOM.render((
+  <DrizzleProvider options={options}>
     <BrowserRouter>
-      <DrizzleProvider options={options}>
         <App/>
-      </DrizzleProvider>
     </BrowserRouter>
+  </DrizzleProvider>
 ), document.getElementById('root'))
 registerServiceWorker()
