@@ -64,10 +64,10 @@ contract('DirectListing', function (accounts) {
         console.log(`getRootNodeFromTLD(${theDomainName}) => `, testDomain);
 
         const ens = await ENS.new();
-
         const registrar = await Registrar.new(ens.address, rootNode.namehash, 0);
-
+        const directListing = await DirectListing.new(registrar.address);
         const setSubnodeOwnerResult = await ens.setSubnodeOwner('0x0', rootNode.sha3, registrar.address);
+
         console.log('ens.setSubnodeOwner => ', setSubnodeOwnerResult, setSubnodeOwnerResult.receipt.logs[0], setSubnodeOwnerResult.logs[0].args);
         assert.strictEqual(await ens.owner(rootNode.namehash), registrar.address);
         assert.strictEqual(await ens.resolver(rootNode.namehash), "0x0000000000000000000000000000000000000000");
@@ -191,21 +191,19 @@ contract('DirectListing', function (accounts) {
 
         //////// Deposit the domain from the owner to the DirectListing contract ////////
 
-        const contract = await DirectListing.new(registrar.address);
-
-        const depositDomainResult = await registrar.transfer(testDomain.sha3, contract.address, {
+        const depositDomainResult = await registrar.transfer(testDomain.sha3, directListing.address, {
             from: initialDomainOwner
         });
         console.log('depositDomainResult => ', depositDomainResult, depositDomainResult.receipt.logs[0], depositDomainResult.receipt.logs[1]);
-        assert.strictEqual(await ens.owner(testDomain.namehash), contract.address);
+        assert.strictEqual(await ens.owner(testDomain.namehash), directListing.address);
         assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
 
         const theDeedOwner3 = await theDeed.owner();
         console.log('theDeedOwner3 => ', theDeedOwner3);
-        assert.strictEqual(contract.address, theDeedOwner3);
+        assert.strictEqual(directListing.address, theDeedOwner3);
         assert.strictEqual(await theDeed.previousOwner(), initialDomainOwner);
 
-        const event = contract.Offered({
+        const event = directListing.Offered({
             _from: initialDomainOwner
         }, {
             fromBlock: 0,
@@ -226,7 +224,7 @@ contract('DirectListing', function (accounts) {
             assert.strictEqual(result.args.node, testDomain.sha3, 'Should have matched the matched label node');
         });
 
-        const offerDomainResult = contract.offer(testDomain.sha3, price, 10, {
+        const offerDomainResult = directListing.offer(testDomain.sha3, price, 10, {
             from: initialDomainOwner
         });
 
