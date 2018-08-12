@@ -5,17 +5,6 @@ import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
 import CustomContractData from './CustomContractData'
 
-function namehash(name) {
-  var node = '0x0000000000000000000000000000000000000000000000000000000000000000';
-  if (name != '') {
-      var labels = name.split(".");
-      for(var i = labels.length - 1; i >= 0; i--) {
-          node = sha3(node + sha3(labels[i]).slice(2), {encoding: 'hex'});
-      }
-  }
-  return node.toString();
-}
-
 function labelhash(label) {
   return sha3(label.slice(0, -4))
 }
@@ -24,7 +13,7 @@ class Sell extends Component {
   state = {}
   handleAmountChange = event => this.setState({amount: event.target.value})
   handleTimeChange = event => this.setState({time: event.target.value})
-  transfer = () => this.context.drizzle.contracts.Registrar.methods.transfer(labelhash(this.props.match.params.name), this.context.drizzle.contracts.DirectListing.address)
+  transfer = () => this.context.drizzle.contracts.Registrar.methods.transfer(labelhash(this.props.match.params.name), this.context.drizzle.contracts.DirectListing.address).send()
   buy = () => this.context.drizzle.contracts.DirectListing.methods.offer(labelhash(this.props.match.params.name), Number(this.state.amount), Number(this.state.time)).send()
   render() {
     return (

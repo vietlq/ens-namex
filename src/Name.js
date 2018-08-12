@@ -12,7 +12,7 @@ const transformStatus = value => {
 
 function namehash(name) {
   var node = '0x0000000000000000000000000000000000000000000000000000000000000000';
-  if (name != '') {
+  if (name !== '') {
       var labels = name.split(".");
       for(var i = labels.length - 1; i >= 0; i--) {
           node = sha3(node + sha3(labels[i]).slice(2), {encoding: 'hex'});
@@ -81,7 +81,6 @@ class Name extends Component {
             </tr>
           </tbody>
         </Table>
-        {console.log(this.context)}
         <CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
           data => data.nodeOwner !== this.props.accounts[0] && !!Number(data.price) && (
             <Button bsStyle="primary" bsSize="large" onClick={() => this.context.drizzle.contracts.DirectListing.methods.buy(labelhash(this.props.match.params.name)).send({ value: data.price })}>

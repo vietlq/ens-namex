@@ -14,9 +14,6 @@ class CustomContractData extends Component {
 
     this.contracts = context.drizzle.contracts
 
-    // Get the contract ABI
-    const abi = this.contracts[this.props.contract].abi;
-
     // Fetch initial value from chain and return cache key for reactive updates.
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : []
     this.dataKey = this.contracts[this.props.contract].methods[this.props.method].cacheCall(...methodArgs)
@@ -62,7 +59,7 @@ class CustomContractData extends Component {
     }
 
     // If return value is an array
-    if (typeof displayData === 'array') {
+    if (Array.isArray(displayData)) {
 
       if (this.props.returnIndex !== undefined) {
         return(
@@ -70,9 +67,9 @@ class CustomContractData extends Component {
         )
       }
 
-      const displayListItems = displayData.map((datum, index) => {
+      const displayListItems = displayData.map((datum, index) => 
         <li key={index}>{`${datum}`}{pendingSpinner}</li>
-      })
+      )
 
       return(
         <ul>
@@ -93,7 +90,7 @@ class CustomContractData extends Component {
       const displayObjectProps = []
 
       Object.keys(displayData).forEach((key) => {
-        if (i != key) {
+        if (i !== key) {
           displayObjectProps.push(<li key={i}>
             <strong>{key}</strong>{pendingSpinner}<br/>
             {`${displayData[key]}`}

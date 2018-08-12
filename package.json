@@ -50,6 +50,7 @@
     "start": "react-scripts start",
     "build:ui": "react-scripts build",
     "test:ui": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cp-contracts": "cp -rf build/contracts src"
   }
 }
