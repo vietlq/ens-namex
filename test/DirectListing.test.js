@@ -5,9 +5,17 @@ var Deed = artifacts.require('@ensdomains/ens/contracts/Deed');
 var namehash = require('eth-ens-namehash').hash;
 
 // https://docs.ens.domains/en/latest/userguide.html
+// http://docs.ens.domains/en/latest/introduction.html
 // https://ethereum.stackexchange.com/questions/21509/truffle-testrpc-time-manipulation
 // https://ethereum.stackexchange.com/questions/15755/simulating-the-passage-of-time-with-testrpc
 // https://github.com/DigixGlobal/tempo/blob/master/lib/index.js
+// https://github.com/poanetwork/solidity-flattener
+
+/*
+Note that on Rinkeby one must deploy his/her one ENSRegistry because the one by ENS supports only .test TLD
+0xe7410170f87102df0055eb195163a03b7f2bff4a
+http://docs.ens.domains/en/latest/introduction.html
+*/
 
 function sendRpc(method, params) {
     return new Promise(function (resolve) {
@@ -37,10 +45,15 @@ function getRootNodeFromTLD(tld) {
 contract('DirectListing', function (accounts) {
 
     it('Offer', async () => {
-        const rootNode = getRootNodeFromTLD('eth');
-        const theDomainName = 'testingname.eth';
+        console.log();
+        const testDefaultTLD = 'eth';
+        const testTLD = 'namex';
+        const rootNode = getRootNodeFromTLD(testTLD);
+        const theDomainName = `testingname.${testTLD}`;
         const testDomain = getRootNodeFromTLD(theDomainName);
         const initialDomainOwner = accounts[1];
+
+        console.log(`getRootNodeFromTLD(${testTLD}) => `, rootNode);
 
         const ens = await ENS.new();
 
