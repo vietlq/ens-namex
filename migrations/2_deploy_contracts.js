@@ -94,7 +94,8 @@ function deployAuctionRegistrarAndDirectListing(deployer, tld) {
 }
 
 module.exports = function (deployer, network) {
-    var tld = 'eth';
+    // Use TLD .namex because .eth is already taken
+    var tld = 'namex';
     console.log('network => ', network);
 
     if (network === 'dev.fifs') {
