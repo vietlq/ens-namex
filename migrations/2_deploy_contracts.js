@@ -5,6 +5,7 @@
 // https://www.polarsparc.com/xhtml/Ethereum-Web-App.html
 // $ geth --identity "test" --datadir ./data/test -ethash.dagdir ./data/test --networkid "21" --maxpeers 0 --nodiscover --ipcdisable --rpc --rpcaddr 127.0.0.1 --rpcport 8081 --rpcapi "web3,eth,personal" --port 30001 --rpccorsdomain "*" --verbosity 2 console
 
+// var ENSInterface = artifacts.require("@ensdomains/ens/contracts/ENS");
 var Deed = artifacts.require("@ensdomains/ens/contracts/Deed");
 var ENS = artifacts.require("@ensdomains/ens/contracts/ENSRegistry");
 // var Registrar = artifacts.require('@ensdomains/ens/contracts/Registrar');
@@ -70,8 +71,14 @@ module.exports = async function (deployer, network, accounts) {
     return deployer.then(() => {
         return deployer.deploy(ENS);
     }).then((ens) => {
+        return deployer.link(ENS, Registrar);
+    }).then(() => {
         return deployer.deploy(Registrar, ENS.address, rootNode.namehash, 0);
     }).then((registrar) => {
+        return deployer.link(ENS, DirectListing);
+    }).then(() => {
+        return deployer.link(Registrar, DirectListing);
+    }).then(() => {
         return deployer.deploy(DirectListing, Registrar.address);
     }).then((directListing) => {
         return ENS.at(ENS.address).setSubnodeOwner('0x0', rootNode.sha3, Registrar.address);
