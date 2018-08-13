@@ -14,10 +14,6 @@ contract DirectListing {
     ENS ens;
     Registrar registrar;
 
-    uint32 constant totalListingLength = 5 days;
-    uint32 constant revealPeriod = 48 hours;
-    uint32 public constant launchLength = 8 weeks;
-
     struct Offering {
         address nodeOwner;
         uint256 price;
