@@ -21,6 +21,7 @@ const getRootNodeFromTLD = LocalTestUtils.getRootNodeFromTLD;
 const getNodeFromDomain = LocalTestUtils.getNodeFromDomain;
 const createDomainName = LocalTestUtils.createDomainName;
 
+/*
 module.exports = async function (deployer, network, accounts) {
     // Use TLD .namex because .eth is already taken
     var tld = 'namex';
@@ -52,4 +53,50 @@ module.exports = async function (deployer, network, accounts) {
 
         const { theDeed } = await createDomainName(web3, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner);
     }
+};
+*/
+
+// Force Truffle to update JSON files and add the field "networks"
+// https://github.com/trufflesuite/truffle/issues/688
+// https://github.com/trufflesuite/truffle/issues/758
+
+module.exports = async function (deployer, network, accounts) {
+    // Use TLD .namex because .eth is already taken
+    var tld = 'namex';
+    console.log('network => ', network);
+
+    var rootNode = getRootNodeFromTLD(tld);
+
+    return deployer.then(() => {
+        return deployer.deploy(ENS);
+    }).then((ens) => {
+        return deployer.deploy(Registrar, ENS.address, rootNode.namehash, 0);
+    }).then((registrar) => {
+        return deployer.deploy(DirectListing, Registrar.address);
+    }).then((directListing) => {
+        return ENS.at(ENS.address).setSubnodeOwner('0x0', rootNode.sha3, Registrar.address);
+    }).then((setSubnodeOwnerResult) => {
+        // Deploy the DirectListing contract
+        console.log('ENS.address => ', ENS.address);
+        console.log('Registrar.address => ', Registrar.address);
+        console.log('DirectListing.address => ', DirectListing.address);
+        console.log('setSubnodeOwnerResult => ', setSubnodeOwnerResult);
+
+        // Create custom domains
+        if (network == 'development') {
+            const testTLD = 'namex';
+            const theDomainName = 'testingname';
+            const initialDomainOwner = accounts[1];
+            console.log('deployer => ', deployer);
+
+            var ens = ENS.at(ENS.address);
+            var registrar = Registrar.at(Registrar.address);
+
+            var web3 = new(require('web3'))(deployer.provider);
+
+            return createDomainName(web3, Deed, theDomainName, testTLD, ens, registrar, initialDomainOwner);
+        }
+    }).then((theDeed) => {
+        console.log('theDeed => ', theDeed);
+    });
 };
