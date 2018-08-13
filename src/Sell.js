@@ -14,8 +14,8 @@ class Sell extends Component {
   state = {}
   handleAmountChange = event => this.setState({amount: event.target.value})
   handleTimeChange = event => this.setState({time: event.target.value})
-  transfer = () => this.context.drizzle.contracts.Registrar.methods.transfer(labelhash(this.props.match.params.name), this.context.drizzle.contracts.DirectListing.address).send()
-  offer = () => this.context.drizzle.contracts.DirectListing.methods.offer(labelhash(this.props.match.params.name), Number(this.state.amount), Number(this.state.time)).send()
+  transfer = async () => await this.context.drizzle.contracts.Registrar.methods.transfer(labelhash(this.props.match.params.name), this.context.drizzle.contracts.DirectListing.address).call()
+  offer = async () => await this.context.drizzle.contracts.DirectListing.methods.offer(labelhash(this.props.match.params.name), Number(this.state.amount), Number(this.state.time)).call()
   render() {
     return (
       <div>
