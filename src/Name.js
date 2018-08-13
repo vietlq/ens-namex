@@ -83,7 +83,22 @@ class Name extends Component {
         </Table>
         <CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
           data => (data.nodeOwner !== this.props.accounts[0]) && !!Number(data.price) && (
-            <Button bsStyle="primary" bsSize="large" onClick={() => this.context.drizzle.contracts.DirectListing.methods.buy(labelhash(this.props.match.params.name)).send({ value: data.price })}>
+            <Button bsStyle="primary" bsSize="large"
+              onClick={
+                () => {
+                  let DirectListing = this.context.drizzle.contracts.DirectListing;
+                  let buyMethod = DirectListing.methods.buy;
+                  let buyMethodInstance = buyMethod(labelhash(this.props.match.params.name));
+
+                  buyMethodInstance.send({ value: data.price }
+                  ).then((result) => {
+                    console.log('Successfully Bought the domain. Result: ', result);
+                  }).catch((error) => {
+                    console.log('Could not Buy. Error: ', error);
+                  });
+                }
+              }
+              >
               Buy
             </Button>
           )} />
