@@ -32,7 +32,7 @@ class Name extends Component {
       <div>
         <h2>{this.props.match.params.name}</h2>
         {<CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
-          data => (data.nodeOwner === this.props.accounts[0]) && !Number(data.price) && (
+          data => data && (data.nodeOwner === this.props.accounts[0]) && !Number(data.price) && (
             <Alert bsStyle="info">
               You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
             </Alert>
