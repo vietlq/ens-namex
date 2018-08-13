@@ -35,7 +35,7 @@ class Sell extends Component {
     let DirectListing = this.context.drizzle.contracts.DirectListing;
     let offerMethod = DirectListing.methods.offer;
     // TTL + current epoch (everything in seconds)
-    const expireAtEpoch = parseInt(this.state.time) + Math.round((new Date()).getTime() / 1000);
+    const expireAtEpoch = parseInt(this.state.time, 10) + Math.round((new Date()).getTime() / 1000);
     let offerMethodInstance = offerMethod(labelhash(this.props.match.params.name), Number(this.state.amount), Number(expireAtEpoch));
 
     offerMethodInstance.send().then((result) => {
