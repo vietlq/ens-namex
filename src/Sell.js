@@ -15,14 +15,32 @@ class Sell extends Component {
   handleAmountChange = event => this.setState({amount: event.target.value})
   handleTimeChange = event => this.setState({time: event.target.value})
   transfer = async () => {
-    let transferMethod = this.context.drizzle.contracts.Registrar.methods.transfer;
+    let Registrar = this.context.drizzle.contracts.Registrar;
+    let transferMethod = Registrar.methods.transfer;
+    let DirectListing = this.context.drizzle.contracts.DirectListing;
     console.log('transferMethod => ');
     console.log(transferMethod);
-    let abcdef = transferMethod(labelhash(this.props.match.params.name), this.context.drizzle.contracts.DirectListing.address);
-    console.log('abcdef => ', abcdef);
-    console.log(await abcdef.call());
+
+    let transferMethodInstance = transferMethod(labelhash(this.props.match.params.name), DirectListing.address);
+    console.log('transferMethodInstance => ', transferMethodInstance);
+
+    transferMethodInstance.send().then((result) => {
+      console.log('result => ', result);
+    }).catch((error) => {
+      console.log('error => ', error);
+    });
   }
-  offer = async () => await this.context.drizzle.contracts.DirectListing.methods.offer.cacheCall(labelhash(this.props.match.params.name), Number(this.state.amount), Number(this.state.time))
+  offer = async () => {
+    let DirectListing = this.context.drizzle.contracts.DirectListing;
+    let offerMethod = DirectListing.methods.offer;
+    let offerMethodInstance = offerMethod(labelhash(this.props.match.params.name), Number(this.state.amount), Number(this.state.time));
+
+    offerMethodInstance.send().then((result) => {
+      console.log('result => ', result);
+    }).catch((error) => {
+      console.log('error => ', error);
+    });
+  }
   render() {
     return (
       <div>
