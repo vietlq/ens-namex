@@ -31,6 +31,8 @@ class Name extends Component {
     return (
       <div>
         <h2>{this.props.match.params.name}</h2>
+        <h4>Labelhash: {labelhash(this.props.match.params.name)}</h4>
+        <h4>Namehash: {namehash(this.props.match.params.name)}</h4>
         {<CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
           data => data && (data.nodeOwner === this.props.accounts[0]) && !Number(data.price) && (
             <Alert bsStyle="info">

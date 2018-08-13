@@ -13,6 +13,7 @@ function labelhash(label) {
 class Sell extends Component {
   state = {}
   handleAmountChange = event => this.setState({amount: event.target.value})
+  // TTL
   handleTimeChange = event => this.setState({time: event.target.value})
   transfer = async () => {
     let Registrar = this.context.drizzle.contracts.Registrar;
@@ -33,7 +34,9 @@ class Sell extends Component {
   offer = async () => {
     let DirectListing = this.context.drizzle.contracts.DirectListing;
     let offerMethod = DirectListing.methods.offer;
-    let offerMethodInstance = offerMethod(labelhash(this.props.match.params.name), Number(this.state.amount), Number(this.state.time));
+    // TTL + current epoch (everything in seconds)
+    const expireAtEpoch = parseInt(this.state.time) + Math.round((new Date()).getTime() / 1000);
+    let offerMethodInstance = offerMethod(labelhash(this.props.match.params.name), Number(this.state.amount), Number(expireAtEpoch));
 
     offerMethodInstance.send().then((result) => {
       console.log('result => ', result);
@@ -45,14 +48,16 @@ class Sell extends Component {
     return (
       <div>
         <h2>Sell {this.props.match.params.name}</h2>
+        <h4>Labelhash: {labelhash(this.props.match.params.name)}</h4>
+        <h4>Namehash: {namehash(this.props.match.params.name)}</h4>
         <CustomContractData contract="ENSRegistry" method="owner" methodArgs={[namehash(this.props.match.params.name)]} render={
-          owner => owner !== this.props.accounts[0] && owner !== this.context.drizzle.contracts.DirectListing.address && (
+          owner => (owner !== this.props.accounts[0]) && (owner !== this.context.drizzle.contracts.DirectListing.address) && (
             <Alert bsStyle="danger">
               You do not own this domain.
             </Alert>
           )} />
         <CustomContractData contract="ENSRegistry" method="owner" methodArgs={[namehash(this.props.match.params.name)]} render={
-          owner => owner !== this.context.drizzle.contracts.DirectListing.address ? ( // TODO: and deed previous owner not accounts[0]
+          owner => (owner !== this.context.drizzle.contracts.DirectListing.address) ? ( // TODO: and deed previous owner not accounts[0]
             <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
               Transfer to Exchange
             </Button>
