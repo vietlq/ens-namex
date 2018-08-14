@@ -51,7 +51,7 @@
     "deploy": "truffle migrate --reset",
     "deploy:rinkeby": "truffle migrate --reset --network rinkeby",
     "deploy:ropsten": "truffle migrate --reset --network ropsten",
-    "build:contract": "rm -rf ./build && truffle compile",
+    "build:contract": "rm -rf ./build && truffle compile && npm run cp-contracts",
     "development": "npm run build && npm run deploy",
     "start": "react-scripts start",
     "build:ui": "react-scripts build",
