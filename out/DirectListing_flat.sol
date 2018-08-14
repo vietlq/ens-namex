@@ -778,12 +778,13 @@ contract DirectListing {
     mapping (bytes32 => Offering) public offerings;
 
     constructor(address _registrar) public {
+        require(_registrar != 0);
         registrar = Registrar(_registrar);
     }
 
     // https://ethereum.stackexchange.com/questions/7853/is-the-block-timestamp-value-in-solidity-seconds-or-milliseconds
     function isOffered(bytes32 _hash) public view returns (bool) {
-        return (offerings[_hash].nodeOwner != 0x0 && offerings[_hash].expireAt >= block.timestamp);
+        return ((offerings[_hash].nodeOwner != 0x0) && (offerings[_hash].expireAt >= block.timestamp));
     }
 
     function offer(bytes32 _hash, uint256 _price, uint256 _expireAt) external {
@@ -804,12 +805,11 @@ contract DirectListing {
     }
 
     function cancelOffer(bytes32 _hash) external {
+        // https://ethereum.stackexchange.com/questions/28972/who-is-msg-sender-when-calling-a-contract-from-a-contract
         // transfer back the domain to the owner
         var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
-
-        // https://ethereum.stackexchange.com/questions/28972/who-is-msg-sender-when-calling-a-contract-from-a-contract
-        require(deedAddr != 0x0 && deed.previousOwner() == msg.sender && deed.owner() == address(this));
+        require((deedAddr != 0x0) && (deed.previousOwner() == msg.sender) && (deed.owner() == address(this)));
 
         delete offerings[_hash];
 
@@ -820,8 +820,7 @@ contract DirectListing {
         // transfer back the domain to the owner
         var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
-
-        require(deedAddr != 0x0 && deed.previousOwner() == msg.sender && deed.owner() == address(this));
+        require((deedAddr != 0x0) && (deed.previousOwner() == msg.sender) && (deed.owner() == address(this)));
 
         if (offerings[_hash].nodeOwner != 0x0)
         {
@@ -838,7 +837,7 @@ contract DirectListing {
     function buy(bytes32 _hash) external payable {
         require(isOffered(_hash) && (msg.value >= offerings[_hash].price));
 
-        var (a, deedAddr, b, c, d) = registrar.entries(_hash);
+        var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
         require((deedAddr != 0x0) && (deed.owner() == address(this)) && (deed.previousOwner() == offerings[_hash].nodeOwner));
 
