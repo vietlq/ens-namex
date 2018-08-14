@@ -14,6 +14,7 @@ const createDomainName = LocalTestUtils.createDomainName;
 // https://docs.ens.domains/en/latest/userguide.html
 // http://docs.ens.domains/en/latest/introduction.html
 // https://github.com/poanetwork/solidity-flattener
+// https://ethereum.stackexchange.com/questions/7287/how-to-find-the-date-of-an-ethereum-transaction-while-parsing-it-with-web3
 
 /*
 Note that on Rinkeby one must deploy his/her one ENSRegistry because the one by ENS supports only .test TLD
@@ -91,5 +92,11 @@ contract('DirectListing', function (accounts) {
 
         const isOfferedResult = await directListing.isOffered(testDomain.sha3);
         assert.strictEqual(isOfferedResult, true, 'The offer should have been offered');
+
+        const offeringsResult = await directListing.offerings(testDomain.sha3);
+        console.log('offeringsResult => ', offeringsResult);
+        assert.strictEqual(offeringsResult[0], initialDomainOwner, 'Should have matched the creator');
+        assert.strictEqual(offeringsResult[1].toString(), price, 'Should have matched the offered price');
+        assert.strictEqual(parseInt(offeringsResult[2].toString(), 10), expireAt, 'Should have matched the expiration epoch');
     });
 });
