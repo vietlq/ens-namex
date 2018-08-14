@@ -13,9 +13,9 @@ getRootNodeFromTLD(namex) =>  {
     sha3: '0x09d5e21dcaff2c807ec99c756118ec2519c72627ded2e59c335ecfc98ef4b445'
 }
 
-getRootNodeFromTLD(testingname.namex) =>  {
+getNodeFromDomain(testingname, namex) =>  {
     namehash: '0x8618cdf525b91ec9d864ede34602298893d75fe87bdbb52b3a9be442ca42190c',
-    sha3: '0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9'
+    sha3: '0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a'
 }
 ```
 
@@ -112,7 +112,7 @@ registrar.transfer
 https://rinkeby.etherscan.io/tx/0x9ee2086bd4edd99c27221f99a40407287b293660f26b3042405041e09d4b1d52
 
  decoded input 	{
-	"bytes32 _hash": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+	"bytes32 _hash": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 	"address newOwner": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093"
 }
  decoded output 	 -
@@ -133,10 +133,10 @@ https://rinkeby.etherscan.io/tx/0x9ee2086bd4edd99c27221f99a40407287b293660f26b30
 		"event": "NewOwner",
 		"args": {
 			"0": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
-			"1": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"1": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 			"2": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093",
 			"node": "0x47094c149c96e975f4a7186684446790195e4f60b18508dd5116918643139341",
-			"label": "0x10a195d8a7771e08ea3a322fe5b6112943d47570446535c0953140dfc811a5a9",
+			"label": "0x67899db9134af0f78e42c55f2b5e1baa371065ebd991cff53bf354f2c1fd500a",
 			"owner": "0xfe179B8446Be6d0801227c1b1FeA768db9C0B093",
 			"length": 3
 		}
