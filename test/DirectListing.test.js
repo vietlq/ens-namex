@@ -58,6 +58,8 @@ contract('DirectListing', function (accounts) {
         assert.strictEqual(directListing.address, theDeedOwner3);
         assert.strictEqual(await theDeed.previousOwner(), initialDomainOwner);
 
+        //////// Make an offer on DirectListing contract ////////
+
         const event = directListing.Offered({
             _from: initialDomainOwner
         }, {
@@ -98,5 +100,23 @@ contract('DirectListing', function (accounts) {
         assert.strictEqual(offeringsResult[0], initialDomainOwner, 'Should have matched the creator');
         assert.strictEqual(offeringsResult[1].toString(), price, 'Should have matched the offered price');
         assert.strictEqual(parseInt(offeringsResult[2].toString(), 10), expireAt, 'Should have matched the expiration epoch');
+
+        //////// Buy the offer from the DirectListing contract ////////
+
+        const buyerAddress = accounts[2];
+
+        const buyResult = await directListing.buy(testDomain.sha3, {
+            from: buyerAddress,
+            value: web3.toWei(0.2, 'ether')
+        });
+        console.log('buyResult => ', buyResult,
+            buyResult.receipt.logs[0],
+            buyResult.receipt.logs[1],
+            buyResult.receipt.logs[2]
+        );
+        assert.strictEqual(await theDeed.previousOwner(), directListing.address);
+        assert.strictEqual(await ens.owner(testDomain.namehash), buyerAddress);
+        assert.strictEqual(await ens.resolver(testDomain.namehash), "0x0000000000000000000000000000000000000000");
+        assert.strictEqual(false, await directListing.isOffered(testDomain.sha3));
     });
 });
