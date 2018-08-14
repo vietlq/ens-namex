@@ -772,6 +772,9 @@ contract DirectListing {
         uint256 expireAt;
     }
 
+    // Minimum listing time in seconds
+    uint constant MIN_LISTING_TIME = 100;
+
     mapping (bytes32 => Offering) public offerings;
 
     constructor(address _registrar) public {
@@ -787,7 +790,8 @@ contract DirectListing {
         var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
 
-        require(deedAddr != 0x0 && deed.previousOwner() == msg.sender && deed.owner() == address(this));
+        require((deedAddr != 0x0) && (deed.previousOwner() == msg.sender) && (deed.owner() == address(this)));
+        require((_expireAt > MIN_LISTING_TIME) && (_expireAt > block.timestamp) && (_expireAt >= (block.timestamp + MIN_LISTING_TIME)));
 
         // the deed owner is the msg.sender
         // node should not be 0 or already offered
@@ -832,6 +836,18 @@ contract DirectListing {
     }
 
     function buy(bytes32 _hash) external payable {
-        require(isOffered(_hash) && msg.value >= offerings[_hash].price);
+        require(isOffered(_hash) && (msg.value >= offerings[_hash].price));
+
+        var (a, deedAddr, b, c, d) = registrar.entries(_hash);
+        var deed = Deed(deedAddr);
+        require((deedAddr != 0x0) && (deed.owner() == address(this)) && (deed.previousOwner() == offerings[_hash].nodeOwner));
+
+        offerings[_hash].nodeOwner.transfer(msg.value);
+
+        registrar.transfer(_hash, msg.sender);
+
+        delete offerings[_hash];
+
+        emit Bought(_hash, msg.sender, msg.value);
     }
 }
