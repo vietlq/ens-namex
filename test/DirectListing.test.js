@@ -78,10 +78,18 @@ contract('DirectListing', function (accounts) {
             assert.strictEqual(result.args.node, testDomain.sha3, 'Should have matched the matched label node');
         });
 
-        const offerDomainResult = directListing.offer(testDomain.sha3, price, 10, {
+        const theTTL = 1000;
+        console.log('web3.eth.getBlock("latest").timestamp => ', web3.eth.getBlock("latest").timestamp);
+        const expireAt = web3.eth.getBlock("latest").timestamp + theTTL;
+
+        const offerDomainResult = directListing.offer(testDomain.sha3, price, expireAt, {
             from: initialDomainOwner
         });
 
-        return Promise.all([domainOfferedEvent, offerDomainResult]);
+        const waitOfferEvent = await Promise.all([domainOfferedEvent, offerDomainResult]);
+        console.log('waitOfferEvent => ', waitOfferEvent);
+
+        const isOfferedResult = await directListing.isOffered(testDomain.sha3);
+        assert.strictEqual(isOfferedResult, true, 'The offer should have been offered');
     });
 });
