@@ -92,6 +92,9 @@ class Name extends Component {
                   let buyMethod = DirectListing.methods.buy;
                   let buyMethodInstance = buyMethod(labelhash(this.props.match.params.name));
 
+                  console.log('data.price => ', data.price);
+                  console.log('Number(data.price) => ', Number(data.price));
+
                   buyMethodInstance.send({ value: data.price }
                   ).then((result) => {
                     console.log('Successfully Bought the domain. Result: ', result);

@@ -38,6 +38,9 @@ class Sell extends Component {
     const expireAtEpoch = parseInt(this.state.time, 10) + Math.round((new Date()).getTime() / 1000);
     let offerMethodInstance = offerMethod(labelhash(this.props.match.params.name), Number(this.state.amount), Number(expireAtEpoch));
 
+    console.log('About to offer the amount: ', this.state.amount);
+    console.log('About to offer the amount in Number format: ', Number(this.state.amount));
+
     offerMethodInstance.send().then((result) => {
       console.log('result => ', result);
     }).catch((error) => {
