@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Alert, FormGroup, FormControl, InputGroup, Button, Form } from 'react-bootstrap'
-import { sha3 } from 'web3-utils'
+import { sha3, toWei } from 'web3-utils'
 import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
 import CustomContractData from './CustomContractData'
@@ -36,8 +36,10 @@ class Sell extends Component {
     let offerMethod = DirectListing.methods.offer;
     // TTL + current epoch (everything in seconds)
     const expireAtEpoch = parseInt(this.state.time, 10) + Math.round((new Date()).getTime() / 1000);
-    let offerMethodInstance = offerMethod(labelhash(this.props.match.params.name), Number(this.state.amount), Number(expireAtEpoch));
+    const offerAmount = toWei(this.state.amount, "ether");
+    let offerMethodInstance = offerMethod(labelhash(this.props.match.params.name), offerAmount, Number(expireAtEpoch));
 
+    console.log('offerAmount => ', offerAmount);
     console.log('About to offer the amount: ', this.state.amount);
     console.log('About to offer the amount in Number format: ', Number(this.state.amount));
 
