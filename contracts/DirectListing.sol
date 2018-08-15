@@ -89,6 +89,8 @@ contract DirectListing {
         var deed = Deed(deedAddr);
         require((deedAddr != 0x0) && (deed.owner() == address(this)) && (deed.previousOwner() == offerings[_hash].nodeOwner));
 
+        // https://ethereum.stackexchange.com/questions/19341/address-send-vs-address-transfer-best-practice-usage
+        // https://solidity.readthedocs.io/en/develop/units-and-global-variables.html?highlight=transfer#address-related
         offerings[_hash].nodeOwner.transfer(msg.value);
 
         registrar.transfer(_hash, msg.sender);
