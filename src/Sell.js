@@ -78,9 +78,12 @@ class Sell extends Component {
           contract="ENSRegistry"
           method="owner"
           methodArgs={[namehash(this.props.match.params.name)]}
+          accounts={this.props.accounts}
           render={
             owner => {
               if ((owner !== this.context.drizzle.contracts.DirectListing.address)) {
+                console.log("accounts => ", this.props.accounts);
+
                 return (
                   // TODO: and deed previous owner not accounts[0]
                   <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
