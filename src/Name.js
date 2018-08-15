@@ -33,36 +33,72 @@ class Name extends Component {
         <h2>{this.props.match.params.name}</h2>
         <h4>Labelhash: {labelhash(this.props.match.params.name)}</h4>
         <h4>Namehash: {namehash(this.props.match.params.name)}</h4>
-        {<CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
-          data => data && (data.nodeOwner === this.props.accounts[0]) && !Number(data.price) && (
-            <Alert bsStyle="info">
-              You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
-            </Alert>
-          )} />
-        || <CustomContractData contract="ENSRegistry" method="owner" methodArgs={[namehash(this.props.match.params.name)]} render={
-        data => (data.owner === this.props.accounts[0]) && !Number(data.price) && (
-          <Alert bsStyle="info">
-            You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
-          </Alert>
-        )} />}
-        <CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
-          data => (data.nodeOwner === this.props.accounts[0]) && !!Number(data.price) && (
-            <Alert bsStyle="info">
-              You own this domain, and have listed it for sale. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>cancel the sale</Link>?
-            </Alert>
-          )} />
-        <CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
-          data => (data.nodeOwner !== this.props.accounts[0]) && !Number(data.price) && (
-            <Alert bsStyle="warning">
-              This domain is not for sale.
-            </Alert>
-          )} />
-        <CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
-          data => (data.nodeOwner !== this.props.accounts[0]) && !!Number(data.price) && (
-            <Alert bsStyle="success">
-              This domain is for sale!
-            </Alert>
-          )} />
+        {
+          <CustomContractData
+            contract="DirectListing"
+            method="offerings"
+            methodArgs={[labelhash(this.props.match.params.name)]}
+            render={
+              data => data && (data.nodeOwner === this.props.accounts[0]) && !Number(data.price) && (
+                <Alert bsStyle="info">
+                  You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
+                </Alert>
+              )
+            }
+          />
+        || <CustomContractData
+          contract="ENSRegistry"
+          method="owner"
+          methodArgs={[namehash(this.props.match.params.name)]}
+          render={
+              data => (data.owner === this.props.accounts[0]) && !Number(data.price) && (
+                <Alert bsStyle="info">
+                  You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
+                </Alert>
+              )
+            }
+          />
+        }
+
+        <CustomContractData
+          contract="DirectListing"
+          method="offerings"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          render={
+            data => (data.nodeOwner === this.props.accounts[0]) && !!Number(data.price) && (
+              <Alert bsStyle="info">
+                You own this domain, and have listed it for sale. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>cancel the sale</Link>?
+              </Alert>
+            )
+          }
+        />
+
+        <CustomContractData
+          contract="DirectListing"
+          method="offerings"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          render={
+            data => (data.nodeOwner !== this.props.accounts[0]) && !Number(data.price) && (
+              <Alert bsStyle="warning">
+                This domain is not for sale.
+              </Alert>
+            )
+          }
+        />
+
+        <CustomContractData
+          contract="DirectListing"
+          method="offerings"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          render={
+            data => (data.nodeOwner !== this.props.accounts[0]) && !!Number(data.price) && (
+              <Alert bsStyle="success">
+                This domain is for sale!
+              </Alert>
+            )
+          }
+        />
+
         <Table bordered condensed>
           <tbody>
             <tr>
@@ -83,30 +119,36 @@ class Name extends Component {
             </tr>
           </tbody>
         </Table>
-        <CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} render={
-          data => (data.nodeOwner !== this.props.accounts[0]) && !!Number(data.price) && (
-            <Button bsStyle="primary" bsSize="large"
-              onClick={
-                () => {
-                  let DirectListing = this.context.drizzle.contracts.DirectListing;
-                  let buyMethod = DirectListing.methods.buy;
-                  let buyMethodInstance = buyMethod(labelhash(this.props.match.params.name));
 
-                  console.log('data.price => ', data.price);
-                  console.log('Number(data.price) => ', Number(data.price));
+        <CustomContractData
+          contract="DirectListing"
+          method="offerings"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          render={
+            data => (data.nodeOwner !== this.props.accounts[0]) && !!Number(data.price) && (
+              <Button bsStyle="primary" bsSize="large"
+                onClick={
+                  () => {
+                    let DirectListing = this.context.drizzle.contracts.DirectListing;
+                    let buyMethod = DirectListing.methods.buy;
+                    let buyMethodInstance = buyMethod(labelhash(this.props.match.params.name));
 
-                  buyMethodInstance.send({ value: data.price }
-                  ).then((result) => {
-                    console.log('Successfully Bought the domain. Result: ', result);
-                  }).catch((error) => {
-                    console.log('Could not Buy. Error: ', error);
-                  });
+                    console.log('data.price => ', data.price);
+                    console.log('Number(data.price) => ', Number(data.price));
+
+                    buyMethodInstance.send({ value: data.price }).then((result) => {
+                      console.log('Successfully Bought the domain. Result: ', result);
+                    }).catch((error) => {
+                      console.log('Could not Buy. Error: ', error);
+                    });
+                  }
                 }
-              }
               >
-              Buy
-            </Button>
-          )} />
+                Buy
+              </Button>
+            )
+          }
+        />
       </div>
     )
   }
