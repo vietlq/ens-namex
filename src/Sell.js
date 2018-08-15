@@ -62,43 +62,53 @@ class Sell extends Component {
           render={
             owner => {
               if ((owner !== this.props.accounts[0])
-                && (owner !== this.context.drizzle.contracts.DirectListing.address))
-              {
+                && (owner !== this.context.drizzle.contracts.DirectListing.address)) {
                 return (
                   <Alert bsStyle="danger">
                     You do not own this domain.
                   </Alert>
                 )
-              }
-              else
-              {
+              } else {
                 return <div/>
               }
             }
           }
         />
-        <CustomContractData contract="ENSRegistry" method="owner" methodArgs={[namehash(this.props.match.params.name)]} render={
-          owner => (owner !== this.context.drizzle.contracts.DirectListing.address) ? ( // TODO: and deed previous owner not accounts[0]
-            <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
-              Transfer to Exchange
-            </Button>
-          ) : (
-            <Form inline>
-              <FormGroup bsSize="large">
-                <InputGroup>
-                  <FormControl type="number" placeholder="Offer amount" onChange={this.handleAmountChange} />
-                  <InputGroup.Addon>ETH</InputGroup.Addon>
-                </InputGroup>{ ' ' }
-                <InputGroup>
-                  <FormControl type="number" placeholder="TTL" onChange={this.handleTimeChange} />
-                  <InputGroup.Addon>seconds</InputGroup.Addon>
-                </InputGroup>{ ' ' }
-                <Button bsStyle="primary" bsSize="large" onClick={this.offer}>
-                  Submit
-                </Button>
-              </FormGroup>
-            </Form>
-          )} />
+        <CustomContractData
+          contract="ENSRegistry"
+          method="owner"
+          methodArgs={[namehash(this.props.match.params.name)]}
+          render={
+            owner => {
+              if ((owner !== this.context.drizzle.contracts.DirectListing.address)) {
+                return (
+                  // TODO: and deed previous owner not accounts[0]
+                  <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
+                    Transfer to Exchange
+                  </Button>
+                )
+              } else {
+                return (
+                  <Form inline>
+                    <FormGroup bsSize="large">
+                      <InputGroup>
+                        <FormControl type="number" placeholder="Offer amount" onChange={this.handleAmountChange} />
+                        <InputGroup.Addon>ETH</InputGroup.Addon>
+                      </InputGroup>{ ' ' }
+                      <InputGroup>
+                        <FormControl type="number" placeholder="TTL" onChange={this.handleTimeChange} />
+                        <InputGroup.Addon>seconds</InputGroup.Addon>
+                      </InputGroup>{ ' ' }
+                      <Button bsStyle="primary" bsSize="large" onClick={this.offer}>
+                        Submit
+                      </Button>
+                    </FormGroup>
+                  </Form>
+                )
+              }
+            }
+          }
+        />
       </div>
     )
   }
