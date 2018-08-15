@@ -787,6 +787,11 @@ contract DirectListing {
         return ((offerings[_hash].nodeOwner != 0x0) && (offerings[_hash].expireAt >= block.timestamp));
     }
 
+    function deedAddr(bytes32 _hash) public view returns (address) {
+        var (,deedAddr,,,) = registrar.entries(_hash);
+        return deedAddr;
+    }
+
     function offer(bytes32 _hash, uint256 _price, uint256 _expireAt) external {
         var (,deedAddr,,,) = registrar.entries(_hash);
         var deed = Deed(deedAddr);
