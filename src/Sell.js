@@ -55,12 +55,28 @@ class Sell extends Component {
         <h2>Sell {this.props.match.params.name}</h2>
         <h4>Labelhash: {labelhash(this.props.match.params.name)}</h4>
         <h4>Namehash: {namehash(this.props.match.params.name)}</h4>
-        <CustomContractData contract="ENSRegistry" method="owner" methodArgs={[namehash(this.props.match.params.name)]} render={
-          owner => (owner !== this.props.accounts[0]) && (owner !== this.context.drizzle.contracts.DirectListing.address) && (
-            <Alert bsStyle="danger">
-              You do not own this domain.
-            </Alert>
-          )} />
+        <CustomContractData
+          contract="ENSRegistry"
+          method="owner"
+          methodArgs={[namehash(this.props.match.params.name)]}
+          render={
+            owner => {
+              if ((owner !== this.props.accounts[0])
+                && (owner !== this.context.drizzle.contracts.DirectListing.address))
+              {
+                return (
+                  <Alert bsStyle="danger">
+                    You do not own this domain.
+                  </Alert>
+                )
+              }
+              else
+              {
+                return <div/>
+              }
+            }
+          }
+        />
         <CustomContractData contract="ENSRegistry" method="owner" methodArgs={[namehash(this.props.match.params.name)]} render={
           owner => (owner !== this.context.drizzle.contracts.DirectListing.address) ? ( // TODO: and deed previous owner not accounts[0]
             <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
