@@ -33,6 +33,21 @@ class Name extends Component {
         <h2>{this.props.match.params.name}</h2>
         <h4>Labelhash: {labelhash(this.props.match.params.name)}</h4>
         <h4>Namehash: {namehash(this.props.match.params.name)}</h4>
+
+        <CustomContractData
+          contract="DirectListing"
+          method="deedAddr"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          accounts={this.props.accounts}
+          render={
+            deedAddr => deedAddr && (
+              <h4>
+                The winning deed: {deedAddr}
+              </h4>
+            )
+          }
+        />
+
         {
           <CustomContractData
             contract="DirectListing"

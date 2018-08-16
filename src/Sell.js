@@ -78,6 +78,20 @@ class Sell extends Component {
 
         <CustomContractData
           contract="DirectListing"
+          method="deedAddr"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          accounts={this.props.accounts}
+          render={
+            deedAddr => deedAddr && (
+              <h4>
+                The winning deed: {deedAddr}
+              </h4>
+            )
+          }
+        />
+
+        <CustomContractData
+          contract="DirectListing"
           method="deedOwner"
           methodArgs={[labelhash(this.props.match.params.name)]}
           accounts={this.props.accounts}
