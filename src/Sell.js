@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
 import CustomContractData from './CustomContractData'
 import { namehash } from './Name'
+import Deed from './contracts/Deed.json'
 
 function labelhash(label) {
   return sha3(label.slice(0, -6))
@@ -74,6 +75,21 @@ class Sell extends Component {
             }
           }
         />
+
+        <CustomContractData
+          contract="DirectListing"
+          method="deedAddr"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          accounts={this.props.accounts}
+          render={
+            deedAddr => deedAddr && (
+              <h3>
+                deedAddr: {deedAddr}
+              </h3>
+            )
+          }
+        />
+
         <CustomContractData
           contract="ENSRegistry"
           method="owner"
