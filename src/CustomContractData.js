@@ -67,7 +67,7 @@ class CustomContractData extends Component {
         )
       }
 
-      const displayListItems = displayData.map((datum, index) => 
+      const displayListItems = displayData.map((datum, index) =>
         <li key={index}>{`${datum}`}{pendingSpinner}</li>
       )
 
@@ -123,7 +123,8 @@ CustomContractData.contextTypes = {
 
 const mapStateToProps = state => {
   return {
-    contracts: state.contracts
+    contracts: state.contracts,
+    web3: state.web3
   }
 }
 

@@ -50,6 +50,23 @@ class Sell extends Component {
       console.log('error => ', error);
     });
   }
+  getOwners = async (deedAddr) => {
+    const web3 = this.context.drizzle.web3;
+    //console.log("this.props.web3 => ", this.props.web3);
+    //console.log("web3 => ", web3);
+    //console.log("web3.eth => ", web3.eth);
+    //console.log("Deed.abi => ", Deed.abi);
+    const DeedContract = new web3.eth.Contract(Deed.abi, deedAddr);
+    console.log("DeedContract => ", DeedContract);
+    const deedOwner = await DeedContract.methods.owner().call({from: this.props.accounts[0]});
+    const deedPrevOwner = await DeedContract.methods.previousOwner().call({from: this.props.accounts[0]});
+    return (
+      <div>
+        <h4>The Deed's Owner: {deedOwner}</h4>
+        <h4>The Deed's Previous Owner: {deedPrevOwner}</h4>
+      </div>
+    )
+  }
   render() {
     return (
       <div>
@@ -82,11 +99,43 @@ class Sell extends Component {
           methodArgs={[labelhash(this.props.match.params.name)]}
           accounts={this.props.accounts}
           render={
-            deedAddr => deedAddr && (
-              <h3>
-                deedAddr: {deedAddr}
-              </h3>
-            )
+            deedAddr => {
+              if (!deedAddr) {
+                return (<div/>)
+              } else {
+                /*
+                const web3 = this.context.drizzle.web3;
+                //console.log("this.props.web3 => ", this.props.web3);
+                //console.log("web3 => ", web3);
+                //console.log("web3.eth => ", web3.eth);
+                //console.log("Deed.abi => ", Deed.abi);
+                const DeedContract = new web3.eth.Contract(Deed.abi, deedAddr);
+                console.log("DeedContract => ", DeedContract);
+                const deedOwner = DeedContract.methods.owner().call({from: this.props.accounts[0]}).then(result => {
+                  console.log('DeedContract.owner(): result => ', result);
+                }).catch(error => {
+                  console.log('DeedContract.owner(): error => ', error);
+                });
+                const deedPrevOwner = DeedContract.methods.previousOwner().call({from: this.props.accounts[0]}).then(result => {
+                  console.log('DeedContract.previousOwner(): result => ', result);
+                }).catch(error => {
+                  console.log('DeedContract.previousOwner(): error => ', error);
+                });
+                const callResult = Promise.all([deedOwner, deedPrevOwner]);
+                console.log('callResult => ', callResult);
+                return (
+                  <div>
+                  </div>
+                )
+                */
+               this.getOwners(deedAddr).then(result => {
+                 return result
+               }).catch(error => {
+                 return (<div/>)
+               });
+               return (<div/>)
+              }
+            }
           }
         />
 
@@ -102,9 +151,22 @@ class Sell extends Component {
 
                 return (
                   // TODO: and deed previous owner not accounts[0]
-                  <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
-                    Transfer to Exchange
-                  </Button>
+                  <CustomContractData
+                    contract="DirectListing"
+                    method="deedAddr"
+                    methodArgs={[labelhash(this.props.match.params.name)]}
+                    accounts={this.props.accounts}
+                    render={
+                      deedAddr => deedAddr && (
+                        <h4>
+                          Winning Deed Address: {deedAddr}<br/>
+                          <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
+                            Transfer to Exchange
+                          </Button>
+                        </h4>
+                      )
+                    }
+                  />
                 )
               } else {
                 return (
@@ -140,7 +202,8 @@ Sell.contextTypes = {
 const mapStateToProps = state => {
   return {
     ENSRegistry: state.contracts.ENSRegistry,
-    accounts: state.accounts
+    accounts: state.accounts,
+    web3: state.web3
   }
 }
 

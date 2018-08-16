@@ -161,7 +161,8 @@ Name.contextTypes = {
 const mapStateToProps = state => {
   return {
     DirectListing: state.contracts.DirectListing,
-    accounts: state.accounts
+    accounts: state.accounts,
+    web3: state.web3
   }
 }
 
