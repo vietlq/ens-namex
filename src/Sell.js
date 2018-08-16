@@ -12,7 +12,7 @@ function labelhash(label) {
 }
 
 class Sell extends Component {
-  state = {}
+  state = {"deedOwner": null, "deedPrevOwner": null}
   handleAmountChange = event => this.setState({amount: event.target.value})
   // TTL
   handleTimeChange = event => this.setState({time: event.target.value})
@@ -60,6 +60,8 @@ class Sell extends Component {
     console.log("DeedContract => ", DeedContract);
     const deedOwner = await DeedContract.methods.owner().call({from: this.props.accounts[0]});
     const deedPrevOwner = await DeedContract.methods.previousOwner().call({from: this.props.accounts[0]});
+    this.state.deedOwner = deedOwner;
+    this.state.deedPrevOwner = deedPrevOwner;
     return (
       <div>
         <h4>The Deed's Owner: {deedOwner}</h4>
@@ -128,12 +130,18 @@ class Sell extends Component {
                   </div>
                 )
                 */
-               this.getOwners(deedAddr).then(result => {
-                 return result
-               }).catch(error => {
-                 return (<div/>)
-               });
-               return (<div/>)
+                this.getOwners(deedAddr).then(result => {
+                  console.log('this.state => ', this.state);
+                  return result;
+                }).catch(error => {
+                  return (<div/>)
+                });
+                return (
+                  <div>
+                    <h4>Deed Owner: {this.state.deedOwner}</h4>
+                    <h4>Deed Previous Owner: {this.state.deedPrevOwner}</h4>
+                  </div>
+                )
               }
             }
           }
