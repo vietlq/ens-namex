@@ -75,6 +75,80 @@ class Sell extends Component {
         <h2>Sell {this.props.match.params.name}</h2>
         <h4>Labelhash: {labelhash(this.props.match.params.name)}</h4>
         <h4>Namehash: {namehash(this.props.match.params.name)}</h4>
+
+        <CustomContractData
+          contract="DirectListing"
+          method="deedOwner"
+          methodArgs={[labelhash(this.props.match.params.name)]}
+          accounts={this.props.accounts}
+          render={
+            owner => {
+              // The account owns the domain, but hasn't transferred to the DirectListing contract
+              if (owner === this.props.accounts[0])
+              {
+                return (
+                  <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
+                    Transfer to Exchange
+                  </Button>
+                )
+              } else {
+                if (owner === this.context.drizzle.contracts.DirectListing.address) {
+                  return (
+                    <CustomContractData
+                      contract="DirectListing"
+                      method="deedPreviousOwner"
+                      methodArgs={[labelhash(this.props.match.params.name)]}
+                      accounts={this.props.accounts}
+                      render={
+                        previousOwner => {
+                          console.log('this.props.deedOwner => ', this.props.deedOwner);
+                          console.log('previousOwner => ', previousOwner);
+                          if (previousOwner === this.props.accounts[0]) {
+                            return (
+                              <Form inline>
+                                <FormGroup bsSize="large">
+                                  <InputGroup>
+                                    <FormControl
+                                      type="number"
+                                      placeholder="Offer amount"
+                                      onChange={this.handleAmountChange} />
+                                    <InputGroup.Addon>ETH</InputGroup.Addon>
+                                  </InputGroup>{ ' ' }
+                                  <InputGroup>
+                                    <FormControl type="number" placeholder="TTL" onChange={this.handleTimeChange} />
+                                    <InputGroup.Addon>seconds</InputGroup.Addon>
+                                  </InputGroup>{ ' ' }
+                                  <Button bsStyle="primary" bsSize="large" onClick={this.offer}>
+                                    Submit
+                                  </Button>
+                                </FormGroup>
+                              </Form>
+                            )
+                          } else {
+                            console.log("accounts => ", this.props.accounts);
+                            return (
+                              <Alert bsStyle="danger">
+                                You do not own this domain.
+                              </Alert>
+                            )
+                          }
+                        }
+                      }
+                    />
+                  )
+                } else {
+                  return (
+                    <Alert bsStyle="danger">
+                      Both you and the DirectListing contract do not own the domain
+                        {this.props.match.params.name}.
+                    </Alert>
+                  )
+                }
+              }
+            }
+          }
+        />
+
         <CustomContractData
           contract="ENSRegistry"
           method="owner"
@@ -137,62 +211,7 @@ class Sell extends Component {
                   return (<div/>)
                 });
                 return (
-                  <div>
-                    <h4>Deed Owner: {this.state.deedOwner}</h4>
-                    <h4>Deed Previous Owner: {this.state.deedPrevOwner}</h4>
-                  </div>
-                )
-              }
-            }
-          }
-        />
-
-        <CustomContractData
-          contract="ENSRegistry"
-          method="owner"
-          methodArgs={[namehash(this.props.match.params.name)]}
-          accounts={this.props.accounts}
-          render={
-            owner => {
-              if ((owner !== this.context.drizzle.contracts.DirectListing.address)) {
-                console.log("accounts => ", this.props.accounts);
-
-                return (
-                  // TODO: and deed previous owner not accounts[0]
-                  <CustomContractData
-                    contract="DirectListing"
-                    method="deedAddr"
-                    methodArgs={[labelhash(this.props.match.params.name)]}
-                    accounts={this.props.accounts}
-                    render={
-                      deedAddr => deedAddr && (
-                        <h4>
-                          Winning Deed Address: {deedAddr}<br/>
-                          <Button bsStyle="primary" bsSize="large" onClick={this.transfer}>
-                            Transfer to Exchange
-                          </Button>
-                        </h4>
-                      )
-                    }
-                  />
-                )
-              } else {
-                return (
-                  <Form inline>
-                    <FormGroup bsSize="large">
-                      <InputGroup>
-                        <FormControl type="number" placeholder="Offer amount" onChange={this.handleAmountChange} />
-                        <InputGroup.Addon>ETH</InputGroup.Addon>
-                      </InputGroup>{ ' ' }
-                      <InputGroup>
-                        <FormControl type="number" placeholder="TTL" onChange={this.handleTimeChange} />
-                        <InputGroup.Addon>seconds</InputGroup.Addon>
-                      </InputGroup>{ ' ' }
-                      <Button bsStyle="primary" bsSize="large" onClick={this.offer}>
-                        Submit
-                      </Button>
-                    </FormGroup>
-                  </Form>
+                  <div/>
                 )
               }
             }

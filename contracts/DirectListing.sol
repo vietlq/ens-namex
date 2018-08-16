@@ -36,8 +36,30 @@ contract DirectListing {
     }
 
     function deedAddr(bytes32 _hash) public view returns (address) {
-        var (,deedAddr,,,) = registrar.entries(_hash);
-        return deedAddr;
+        var (,theDeedAddr,,,) = registrar.entries(_hash);
+        return theDeedAddr;
+    }
+
+    function deedOwner(bytes32 _hash) public view returns (address) {
+        var theDeedAddr = this.deedAddr(_hash);
+        if (theDeedAddr == 0x0) {
+            return 0x0;
+        }
+
+        var deed = Deed(theDeedAddr);
+
+        return deed.owner();
+    }
+
+    function deedPreviousOwner(bytes32 _hash) public view returns (address) {
+        var theDeedAddr = this.deedAddr(_hash);
+        if (theDeedAddr == 0x0) {
+            return 0x0;
+        }
+
+        var deed = Deed(theDeedAddr);
+
+        return deed.previousOwner();
     }
 
     function offer(bytes32 _hash, uint256 _price, uint256 _expireAt) external {
