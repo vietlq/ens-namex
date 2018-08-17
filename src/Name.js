@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Alert, Table, Button } from 'react-bootstrap'
 import { drizzleConnect } from 'drizzle-react'
 import CustomContractData from './CustomContractData'
-import { sha3 } from 'web3-utils'
+import { sha3, fromWei } from 'web3-utils'
 import PropTypes from 'prop-types'
 
 const transformStatus = value => {
@@ -197,7 +197,12 @@ class Name extends Component {
                             contract="DirectListing"
                             method="offerings"
                             methodArgs={[labelhash(this.props.match.params.name)]}
-                            returnKey="price" />
+                            render={
+                              offerings => {
+                                return (<span>{fromWei(offerings.price)} ETH</span>)
+                              }
+                            }
+                          />
                         )
                       } else {
                         return (
