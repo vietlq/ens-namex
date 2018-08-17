@@ -118,19 +118,103 @@ class Name extends Component {
           <tbody>
             <tr>
               <th>Status</th>
-              <td><CustomContractData contract="DirectListing" method="isOffered" methodArgs={[labelhash(this.props.match.params.name)]} render={transformStatus} /></td>
+              <td>
+                <CustomContractData
+                  contract="DirectListing"
+                  method="isOffered"
+                  methodArgs={[labelhash(this.props.match.params.name)]}
+                  render={transformStatus} />
+              </td>
             </tr>
             <tr>
-              <th>Owner {this.props.accounts[0]}</th>
-              <td><CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} returnKey="nodeOwner" /></td>
+              <th>
+                Deed Owner:<br/>
+                <CustomContractData
+                  contract="DirectListing"
+                  method="deedOwner"
+                  methodArgs={[labelhash(this.props.match.params.name)]}
+                  render={this.props.deedOwner} /><br/>
+                Deed Previous Owner:<br/>
+                <CustomContractData
+                  contract="DirectListing"
+                  method="deedPreviousOwner"
+                  methodArgs={[labelhash(this.props.match.params.name)]}
+                  render={this.props.deedPreviousOwner} />
+              </th>
+              <td>
+                <CustomContractData
+                  contract="DirectListing"
+                  method="offerings"
+                  methodArgs={[labelhash(this.props.match.params.name)]}
+                  render={
+                    offerings => {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                        return (
+                          <span>Offered by {offerings.nodeOwner}</span>
+                        )
+                      } else {
+                        return (
+                          <span>Not currently offered</span>
+                        )
+                      }
+                    }
+                  }
+                />
+              </td>
             </tr>
             <tr>
               <th>Price</th>
-              <td><CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} returnKey="price" /></td>
+              <td>
+                <CustomContractData
+                  contract="DirectListing"
+                  method="offerings"
+                  methodArgs={[labelhash(this.props.match.params.name)]}
+                  render={
+                    offerings => {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                        return (
+                          <CustomContractData
+                            contract="DirectListing"
+                            method="offerings"
+                            methodArgs={[labelhash(this.props.match.params.name)]}
+                            returnKey="price" />
+                        )
+                      } else {
+                        return (
+                          <span>Not currently offered</span>
+                        )
+                      }
+                    }
+                  }
+                />
+              </td>
             </tr>
             <tr>
               <th>Expires at</th>
-              <td><CustomContractData contract="DirectListing" method="offerings" methodArgs={[labelhash(this.props.match.params.name)]} returnKey="expireAt" /></td>
+              <td>
+                <CustomContractData
+                  contract="DirectListing"
+                  method="offerings"
+                  methodArgs={[labelhash(this.props.match.params.name)]}
+                  render={
+                    offerings => {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                        return (
+                          <CustomContractData
+                            contract="DirectListing"
+                            method="offerings"
+                            methodArgs={[labelhash(this.props.match.params.name)]}
+                            returnKey="expireAt" />
+                        )
+                      } else {
+                        return (
+                          <span>Not currently offered</span>
+                        )
+                      }
+                    }
+                  }
+                />
+              </td>
             </tr>
           </tbody>
         </Table>
