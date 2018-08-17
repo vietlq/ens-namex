@@ -48,12 +48,15 @@ class Name extends Component {
           }
         />
 
+        <h4>Your address: {this.props.accounts[0]}</h4>
+
         {
           <CustomContractData
             contract="DirectListing"
             method="offerings"
             methodArgs={[labelhash(this.props.match.params.name)]}
             render={
+              // TODO: Check against the deedOwner and deedPreviousOwner
               data => data && (data.nodeOwner === this.props.accounts[0]) && !Number(data.price) && (
                 <Alert bsStyle="info">
                   You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
@@ -66,6 +69,7 @@ class Name extends Component {
           method="owner"
           methodArgs={[namehash(this.props.match.params.name)]}
           render={
+              // TODO: Check against the deedOwner and deedPreviousOwner
               data => (data.owner === this.props.accounts[0]) && !Number(data.price) && (
                 <Alert bsStyle="info">
                   You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
@@ -80,6 +84,7 @@ class Name extends Component {
           method="offerings"
           methodArgs={[labelhash(this.props.match.params.name)]}
           render={
+            // TODO: Check against the deedOwner and deedPreviousOwner
             data => (data.nodeOwner === this.props.accounts[0]) && !!Number(data.price) && (
               <Alert bsStyle="info">
                 You own this domain, and have listed it for sale. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>cancel the sale</Link>?
@@ -93,6 +98,7 @@ class Name extends Component {
           method="offerings"
           methodArgs={[labelhash(this.props.match.params.name)]}
           render={
+            // TODO: Check against the deedOwner and deedPreviousOwner
             data => (data.nodeOwner !== this.props.accounts[0]) && !Number(data.price) && (
               <Alert bsStyle="warning">
                 This domain is not for sale.
@@ -106,6 +112,7 @@ class Name extends Component {
           method="offerings"
           methodArgs={[labelhash(this.props.match.params.name)]}
           render={
+            // TODO: Check against the deedOwner and deedPreviousOwner
             data => (data.nodeOwner !== this.props.accounts[0]) && !!Number(data.price) && (
               <Alert bsStyle="success">
                 This domain is for sale!
@@ -121,9 +128,22 @@ class Name extends Component {
               <td>
                 <CustomContractData
                   contract="DirectListing"
-                  method="isOffered"
+                  method="offerings"
                   methodArgs={[labelhash(this.props.match.params.name)]}
-                  render={transformStatus} />
+                  render={
+                    offerings => {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                        return (
+                          <span>Offered by {offerings.nodeOwner}</span>
+                        )
+                      } else {
+                        return (
+                          <span>Not currently offered</span>
+                        )
+                      }
+                    }
+                  }
+                />
               </td>
             </tr>
             <tr>
@@ -224,6 +244,7 @@ class Name extends Component {
           method="offerings"
           methodArgs={[labelhash(this.props.match.params.name)]}
           render={
+            // TODO: Check against the deedOwner and deedPreviousOwner
             data => (data.nodeOwner !== this.props.accounts[0]) && !!Number(data.price) && (
               <Button bsStyle="primary" bsSize="large"
                 onClick={
