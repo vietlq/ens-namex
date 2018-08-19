@@ -107,49 +107,6 @@ class Name extends Component {
         <h4>The DirectListing address: {this.context.drizzle.contracts.DirectListing.address}</h4>
         <h4>Your address: {this.props.accounts[0]}</h4>
 
-        {
-          <CustomContractData
-            contract="DirectListing"
-            method="offerings"
-            methodArgs={[labelhash(this.props.match.params.name)]}
-            render={
-              // TODO: Check against the deedOwner and deedPreviousOwner
-              data => data && (data.nodeOwner === this.props.accounts[0]) && !Number(data.price) && (
-                <Alert bsStyle="info">
-                  You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
-                </Alert>
-              )
-            }
-          />
-        || <CustomContractData
-          contract="ENSRegistry"
-          method="owner"
-          methodArgs={[namehash(this.props.match.params.name)]}
-          render={
-              // TODO: Check against the deedOwner and deedPreviousOwner
-              data => (data.owner === this.props.accounts[0]) && !Number(data.price) && (
-                <Alert bsStyle="info">
-                  You own this domain. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>sell it</Link>?
-                </Alert>
-              )
-            }
-          />
-        }
-
-        <CustomContractData
-          contract="DirectListing"
-          method="offerings"
-          methodArgs={[labelhash(this.props.match.params.name)]}
-          render={
-            // TODO: Check against the deedOwner and deedPreviousOwner
-            data => (data.nodeOwner === this.props.accounts[0]) && !!Number(data.price) && (
-              <Alert bsStyle="info">
-                You own this domain, and have listed it for sale. Want to <Link to={`/name/${this.props.match.params.name}/sell`}>cancel the sale</Link>?
-              </Alert>
-            )
-          }
-        />
-
         <CustomContractData
           contract="DirectListing"
           method="offerings"
