@@ -7,7 +7,6 @@ import { LoadingContainer } from 'drizzle-react-components'
 
 import List from './List'
 import Name from './Name'
-import Sell from './Sell'
 
 class App extends Component {
   state = {}
@@ -40,7 +39,6 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={List}/>
               <Route exact path="/name/:name" component={Name}/>
-              <Route exact path="/name/:name/sell" component={Sell}/>
             </Switch>
           </LoadingContainer>
         </div>
