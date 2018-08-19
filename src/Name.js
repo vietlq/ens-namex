@@ -5,6 +5,7 @@ import CustomContractData from './CustomContractData'
 import { sha3, fromWei, toWei } from 'web3-utils'
 import PropTypes from 'prop-types'
 import { Alert, Table, FormGroup, FormControl, InputGroup, Button, Form } from 'react-bootstrap'
+import Deed from './contracts/Deed.json'
 
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000';
 const ZERO_UINT256 = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -61,6 +62,25 @@ class Name extends Component {
     }).catch((error) => {
       console.log('error => ', error);
     });
+  }
+  getOwners = async (deedAddr) => {
+    const web3 = this.context.drizzle.web3;
+    //console.log("this.props.web3 => ", this.props.web3);
+    //console.log("web3 => ", web3);
+    //console.log("web3.eth => ", web3.eth);
+    //console.log("Deed.abi => ", Deed.abi);
+    const DeedContract = new web3.eth.Contract(Deed.abi, deedAddr);
+    console.log("DeedContract => ", DeedContract);
+    const deedOwner = await DeedContract.methods.owner().call({from: this.props.accounts[0]});
+    const deedPrevOwner = await DeedContract.methods.previousOwner().call({from: this.props.accounts[0]});
+    this.state.deedOwner = deedOwner;
+    this.state.deedPrevOwner = deedPrevOwner;
+    return (
+      <div>
+        <h4>The Deed's Owner: {deedOwner}</h4>
+        <h4>The Deed's Previous Owner: {deedPrevOwner}</h4>
+      </div>
+    )
   }
   render() {
     if (!this.props.match.params.name) return <p>Loading...</p>
