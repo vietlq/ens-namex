@@ -6,12 +6,15 @@ import CustomContractData from './CustomContractData'
 import { sha3, fromWei } from 'web3-utils'
 import PropTypes from 'prop-types'
 
+const ZERO_ADDR = '0x0000000000000000000000000000000000000000';
+const ZERO_UINT256 = '0x0000000000000000000000000000000000000000000000000000000000000000';
+
 const transformStatus = value => {
   return !!value.price ? <span>For sale</span> : <span>Unknown</span>
 }
 
 export function namehash(name) {
-  var node = '0x0000000000000000000000000000000000000000000000000000000000000000';
+  var node = ZERO_UINT256;
   if (name !== '') {
       var labels = name.split(".");
       for(var i = labels.length - 1; i >= 0; i--) {
@@ -132,7 +135,7 @@ class Name extends Component {
                   methodArgs={[labelhash(this.props.match.params.name)]}
                   render={
                     offerings => {
-                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== ZERO_ADDR)) {
                         return (
                           <span>Offered by {offerings.nodeOwner}</span>
                         )
@@ -168,7 +171,7 @@ class Name extends Component {
                   methodArgs={[labelhash(this.props.match.params.name)]}
                   render={
                     offerings => {
-                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== ZERO_ADDR)) {
                         return (
                           <span>Offered by {offerings.nodeOwner}</span>
                         )
@@ -191,7 +194,7 @@ class Name extends Component {
                   methodArgs={[labelhash(this.props.match.params.name)]}
                   render={
                     offerings => {
-                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== ZERO_ADDR)) {
                         return (
                           <CustomContractData
                             contract="DirectListing"
@@ -223,7 +226,7 @@ class Name extends Component {
                   methodArgs={[labelhash(this.props.match.params.name)]}
                   render={
                     offerings => {
-                      if (offerings.nodeOwner && (offerings.nodeOwner !== "0x0000000000000000000000000000000000000000")) {
+                      if (offerings.nodeOwner && (offerings.nodeOwner !== ZERO_ADDR)) {
                         return (
                           <CustomContractData
                             contract="DirectListing"
