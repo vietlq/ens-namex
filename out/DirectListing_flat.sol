@@ -765,7 +765,15 @@ contract DirectListing {
     ENS ens;
     Registrar registrar;
 
-    enum ListingMode { DoesNotExist, HeldByOwner, HeldInEscrow, ListedButExpired, ListedAndValid }
+    enum ListingMode {
+        Invalid,
+        DoesNotExist,
+        ForeverLost,
+        HeldByOwner,
+        HeldInEscrow,
+        ListedButExpired,
+        ListedAndValid
+    }
 
     struct Offering {
         address nodeOwner;
@@ -783,14 +791,45 @@ contract DirectListing {
         registrar = Registrar(_registrar);
     }
 
-    // https://ethereum.stackexchange.com/questions/7853/is-the-block-timestamp-value-in-solidity-seconds-or-milliseconds
-    function isOffered(bytes32 _hash) public view returns (bool) {
-        return ((offerings[_hash].nodeOwner != 0x0) && (offerings[_hash].expireAt >= block.timestamp));
-    }
-
     function deedAddr(bytes32 _hash) public view returns (address) {
         var (,theDeedAddr,,,) = registrar.entries(_hash);
         return theDeedAddr;
+    }
+
+    function listingMode(bytes32 _hash) public view returns (ListingMode) {
+        var theDeedAddr = this.deedAddr(_hash);
+
+        if (theDeedAddr == 0x0) {
+            return ListingMode.DoesNotExist;
+        }
+
+        var deed = Deed(theDeedAddr);
+
+        if (deed.owner() == 0x0) {
+            return ListingMode.ForeverLost;
+        }
+
+        if (deed.owner() != address(this)) {
+            return ListingMode.HeldByOwner;
+        }
+
+        if (offerings[_hash].nodeOwner == 0x0) {
+            return ListingMode.HeldInEscrow;
+        }
+
+        if (offerings[_hash].expireAt < block.timestamp) {
+            return ListingMode.ListedButExpired;
+        } else {
+            return ListingMode.ListedAndValid;
+        }
+
+        // We will never get here, keeping extra value
+        return ListingMode.Invalid;
+    }
+
+    // https://ethereum.stackexchange.com/questions/7853/is-the-block-timestamp-value-in-solidity-seconds-or-milliseconds
+    function isOffered(bytes32 _hash) public view returns (bool) {
+        return ((offerings[_hash].nodeOwner != 0x0) && (offerings[_hash].expireAt >= block.timestamp));
     }
 
     function deedOwner(bytes32 _hash) external view returns (address) {
