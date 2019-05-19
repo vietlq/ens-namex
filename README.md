@@ -10,8 +10,29 @@ An ENS domain exchange.
 
 ## Requirements
 
+### Original Dependencies
+
 * At least Ganache CLI v6.1.6 (ganache-core: 2.1.5). Older Ganache CLI has a bug in timing API
 * Ganache GUI should be at least v1.2.1 (CLI v6.1.6, ganache-core: 2.1.5). Older version has bugs from older Ganache CLI
+
+### Lastest Dependencies (2019-05-19)
+
+* Node v10.15.3
+* Solidity v0.5.0 (solc-js)
+* Truffle v5.0.18 (core: 5.0.18)
+* Web3.js v1.0.0-beta.37
+* Ganache CLI v6.4.3 (ganache-core: 2.5.5)
+
+NOTE: NodeJS v12.x breaks Truffle v5.0, so stay with NodeJS v10.x
+
+To install NodeJS, NPM, Truffle, Ganache-UI, Ganache-CLI, and Drizzle, refer to:
+
+* https://github.com/nvm-sh/nvm
+* https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-18-04
+* https://github.com/trufflesuite/truffle
+* https://github.com/trufflesuite/ganache-cli
+* https://truffleframework.com/ganache
+* https://truffleframework.com/drizzle
 
 ## Local Development
 
