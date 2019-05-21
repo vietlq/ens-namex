@@ -58,6 +58,7 @@ For `yarn`: `truffle migrate && yarn cp-contracts && yarn start`
 * http://juan.blanco.ws/solidity-contracts-in-visual-studio-code/
 * https://medium.com/coinmonks/solidity-import-in-vs-code-the-right-way-82baa1cc5a71
 * https://medium.com/codechain/solidity-language-support-for-vscode-541edf23e43d
+* https://michalzalecki.com/ethereum-test-driven-introduction-to-solidity/
 
 ## Quick & Dirty Deployment Process
 
